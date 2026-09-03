@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "./PageHero";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { pages } from "@/content/copy";
 
 /**
  * Shared shell for policy pages.
@@ -25,13 +26,13 @@ export function LegalPage({
 }) {
   return (
     <>
-      <PageHero eyebrow="Legal" title={title} lead={intro} tone="light" />
+      <PageHero eyebrow={pages.legal.eyebrow} title={title} lead={intro} tone="light" />
       <Breadcrumbs items={[breadcrumb]} />
 
       <Container size="narrow">
         <div className="py-12 sm:py-16">
           <p className="mb-10 border-b border-line pb-6 text-sm text-ink-muted">
-            Last updated: {updated}
+            {pages.legal.updatedLabel} {updated}
           </p>
           <div className="prose-brand">{children}</div>
         </div>

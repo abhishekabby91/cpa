@@ -1,6 +1,7 @@
 import { aboutContent } from "@/content/firm";
 import { featuredTeam } from "@/content/team";
 import { site } from "@/content/site";
+import { actions, home } from "@/content/copy";
 import { Button } from "@/components/ui/Button";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { initials } from "@/lib/utils";
@@ -21,10 +22,10 @@ export function AboutPreview() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button href="/about" variant="secondary">
-              About our firm
+              {actions.aboutFirm}
             </Button>
             <Button href="/team" variant="ghost">
-              Meet the team →
+              {actions.meetTeam} →
             </Button>
           </div>
         </div>
@@ -60,8 +61,7 @@ export function AboutPreview() {
                 ))}
               </ul>
               <p className="text-sm leading-relaxed text-ink-muted">
-                Licensed CPAs on every engagement, serving clients since{" "}
-                {site.foundedYear}.
+                {home.about.valuesNote(site.foundedYear)}
               </p>
             </div>
           ) : null}

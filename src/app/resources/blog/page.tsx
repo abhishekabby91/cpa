@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { postCategories, sortedPosts } from "@/content/posts";
+import { pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { PageHero } from "@/components/sections/PageHero";
@@ -18,9 +19,9 @@ export default function BlogPage() {
   return (
     <>
       <PageHero
-        eyebrow="Blog"
-        title="Articles worth the ten minutes"
-        lead="Written by the people who do the work, and reviewed before publication. Search by keyword or filter by topic."
+        eyebrow={pages.blog.eyebrow}
+        title={pages.blog.title}
+        lead={pages.blog.lead}
       />
 
       <Breadcrumbs
@@ -35,8 +36,8 @@ export default function BlogPage() {
       </Section>
 
       <CtaBand
-        title="Want this applied to your situation?"
-        body="General guidance only goes so far. Book a consultation and we'll tell you what actually applies to your facts."
+        title={pages.blog.ctaTitle}
+        body={pages.blog.ctaBody}
       />
     </>
   );

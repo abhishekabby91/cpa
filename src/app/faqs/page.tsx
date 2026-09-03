@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { faqCategories, faqs } from "@/content/faqs";
 import { site } from "@/content/site";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { faqSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -29,16 +30,16 @@ export default function FaqsPage() {
   return (
     <>
       <PageHero
-        eyebrow="FAQs"
-        title="Straight answers to the questions we're asked most"
-        lead="If yours isn't here, ask — we'd rather answer it directly than have you guess."
+        eyebrow={pages.faqs.eyebrow}
+        title={pages.faqs.title}
+        lead={pages.faqs.lead}
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href={site.consultationUrl} size="lg">
-            Schedule a Consultation
+            {actions.consult}
           </Button>
           <Button href="/contact" variant="outlineDark" size="lg">
-            Ask a question
+            {pages.faqs.askCta}
           </Button>
         </div>
       </PageHero>
@@ -50,7 +51,7 @@ export default function FaqsPage() {
           {/* In-page navigation for a long list. */}
           <nav aria-label="FAQ categories" className="lg:col-span-3">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
-              Jump to
+              {pages.faqs.jumpToLabel}
             </p>
             <ul className="mt-4 space-y-1 lg:sticky lg:top-28">
               {grouped.map((group) => (
@@ -81,8 +82,8 @@ export default function FaqsPage() {
       </Section>
 
       <CtaBand
-        title="Still have a question?"
-        body={`Call ${site.phone} or send a note — we answer questions year-round, not just during filing season.`}
+        title={pages.faqs.ctaTitle}
+        body={pages.faqs.ctaBody(site.phone)}
       />
 
       <JsonLd data={faqSchema(faqs)} />

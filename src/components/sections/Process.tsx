@@ -1,4 +1,5 @@
 import { processSteps } from "@/content/firm";
+import { actions, home } from "@/content/copy";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
@@ -10,9 +11,9 @@ export function Process() {
     <Section tone="dark" ariaLabelledBy="process-heading">
       <SectionHeading
         id="process-heading"
-        eyebrow="How It Works"
-        title="What working together looks like"
-        lead="No lengthy onboarding, no surprise invoice. You'll know the scope, the people, and the price before anything starts."
+        eyebrow={home.process.eyebrow}
+        title={home.process.title}
+        lead={home.process.lead}
         tone="dark"
       />
 
@@ -49,12 +50,10 @@ export function Process() {
       </ol>
 
       <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-9 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-lg text-white/80">
-          Let&rsquo;s talk about your financial goals.
-        </p>
+        <p className="text-lg text-white/80">{home.process.footerLine}</p>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href={site.consultationUrl} variant="onDark">
-            Schedule a Consultation
+            {actions.consult}
           </Button>
           <Button href={`tel:${site.phoneHref}`} variant="outlineDark" external>
             <Icon name="phone" className="h-4 w-4" />

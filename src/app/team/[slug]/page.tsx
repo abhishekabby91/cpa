@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getTeamMember, team } from "@/content/team";
 import { locations } from "@/content/locations";
 import { site } from "@/content/site";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { personSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -105,16 +106,16 @@ export default async function TeamMemberPage({
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button href={site.consultationUrl}>Schedule a Consultation</Button>
+                <Button href={site.consultationUrl}>{actions.consult}</Button>
                 {member.email ? (
                   <Button href={`mailto:${member.email}`} variant="outlineDark" external>
                     <Icon name="mail" className="h-4 w-4" />
-                    Email {member.name.split(" ")[0]}
+                    {pages.teamProfile.emailCta(member.name.split(" ")[0])}
                   </Button>
                 ) : null}
                 {member.linkedin ? (
                   <Button href={member.linkedin} variant="outlineDark" external>
-                    LinkedIn
+                    {pages.teamProfile.linkedinCta}
                   </Button>
                 ) : null}
               </div>
@@ -134,7 +135,7 @@ export default async function TeamMemberPage({
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <h2 id="bio-heading" className="text-2xl">
-              About {member.name.split(" ")[0]}
+              {pages.teamProfile.bioTitle(member.name.split(" ")[0])}
             </h2>
             <div className="prose-brand mt-6">
               {member.bio.map((paragraph) => (
@@ -145,7 +146,7 @@ export default async function TeamMemberPage({
 
           <aside className="space-y-8 lg:col-span-5">
             <div className="rounded-brand-lg border border-line bg-muted p-6">
-              <h2 className="text-base">Areas of focus</h2>
+              <h2 className="text-base">{pages.teamProfile.expertiseTitle}</h2>
               <ul className="mt-4 space-y-2.5">
                 {member.expertise.map((item) => (
                   <li key={item} className="flex gap-2.5 text-sm text-ink-muted">
@@ -158,7 +159,7 @@ export default async function TeamMemberPage({
 
             {member.education?.length ? (
               <div className="rounded-brand-lg border border-line p-6">
-                <h2 className="text-base">Education</h2>
+                <h2 className="text-base">{pages.teamProfile.educationTitle}</h2>
                 <ul className="mt-4 space-y-2 text-sm text-ink-muted">
                   {member.education.map((item) => (
                     <li key={item}>{item}</li>
@@ -169,7 +170,7 @@ export default async function TeamMemberPage({
 
             {member.memberships?.length ? (
               <div className="rounded-brand-lg border border-line p-6">
-                <h2 className="text-base">Professional memberships</h2>
+                <h2 className="text-base">{pages.teamProfile.membershipsTitle}</h2>
                 <ul className="mt-4 space-y-2 text-sm text-ink-muted">
                   {member.memberships.map((item) => (
                     <li key={item}>{item}</li>
@@ -180,7 +181,7 @@ export default async function TeamMemberPage({
 
             {offices.length ? (
               <div className="rounded-brand-lg border border-line p-6">
-                <h2 className="text-base">Based in</h2>
+                <h2 className="text-base">{pages.teamProfile.basedInTitle}</h2>
                 <ul className="mt-4 space-y-2 text-sm">
                   {offices.map((office) => (
                     <li key={office.slug}>
@@ -203,8 +204,8 @@ export default async function TeamMemberPage({
         <Section tone="muted" ariaLabelledBy="colleagues-heading">
           <SectionHeading
             id="colleagues-heading"
-            eyebrow="Our Team"
-            title="Others you might work with"
+            eyebrow={pages.teamProfile.colleaguesEyebrow}
+            title={pages.teamProfile.colleaguesTitle}
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {colleagues.map((colleague) => (

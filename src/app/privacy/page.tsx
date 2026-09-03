@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 import { LegalPage } from "@/components/sections/LegalPage";
+import { pages } from "@/content/copy";
 
 export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
@@ -12,10 +13,10 @@ export const metadata: Metadata = pageMetadata({
 export default function PrivacyPage() {
   return (
     <LegalPage
-      title="Privacy Policy"
-      updated="January 1, 2026"
-      breadcrumb={{ name: "Privacy Policy", href: "/privacy" }}
-      intro={`How ${site.firmName} handles the information you share with us, on this website and in the course of an engagement.`}
+      title={pages.legal.privacy.title}
+      updated={pages.legal.privacy.updated}
+      breadcrumb={{ name: pages.legal.privacy.title, href: "/privacy" }}
+      intro={pages.legal.privacy.intro(site.firmName)}
     >
       <p className="rounded-brand border-l-4 border-accent bg-muted p-4 text-sm">
         <strong>Template notice —</strong> this policy is a starting point drafted

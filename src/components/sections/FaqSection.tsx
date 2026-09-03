@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { homepageFaqs } from "@/content/faqs";
+import { home } from "@/content/copy";
 import { FaqAccordion } from "./FaqAccordion";
 import { Section, SectionHeading } from "@/components/ui/Section";
 
@@ -10,17 +11,17 @@ export function FaqSection() {
         <div className="lg:col-span-4">
           <SectionHeading
             id="faq-heading"
-            eyebrow="Common Questions"
-            title="Questions we're asked before the first meeting"
+            eyebrow={home.faqs.eyebrow}
+            title={home.faqs.title}
           />
           <p className="mt-5 text-[0.9375rem] leading-relaxed text-ink-muted">
-            Don&rsquo;t see yours?{" "}
+            {home.faqs.helperLead}{" "}
             <Link href="/faqs" className="font-medium text-accent hover:underline">
-              Read all FAQs
+              {home.faqs.helperLinkAll}
             </Link>{" "}
-            or{" "}
+            {home.faqs.helperMiddle}{" "}
             <Link href="/contact" className="font-medium text-accent hover:underline">
-              ask us directly
+              {home.faqs.helperLinkAsk}
             </Link>
             .
           </p>

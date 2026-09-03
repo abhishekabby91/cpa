@@ -1,4 +1,5 @@
 import { sortedPosts } from "@/content/posts";
+import { home } from "@/content/copy";
 import { BlogCard } from "@/components/cards/BlogCard";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
@@ -13,12 +14,12 @@ export function ResourcesPreview({ limit = 3 }: { limit?: number }) {
       <div className="flex flex-wrap items-end justify-between gap-6">
         <SectionHeading
           id="resources-heading"
-          eyebrow="Resources"
-          title="Plain explanations of the things clients ask about"
+          eyebrow={home.resources.eyebrow}
+          title={home.resources.title}
           className="max-w-2xl"
         />
         <Button href="/resources/blog" variant="secondary">
-          Visit the resource center
+          {home.resources.cta}
         </Button>
       </div>
 

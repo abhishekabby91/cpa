@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getPost, getRelatedPosts, posts } from "@/content/posts";
 import { getTeamMember } from "@/content/team";
 import { site } from "@/content/site";
+import { pages } from "@/content/copy";
 import type { PostBlock } from "@/content/types";
 import { pageMetadata } from "@/lib/seo";
 import { articleSchema } from "@/lib/schema";
@@ -184,13 +185,11 @@ export default async function BlogPostPage({
           <aside className="mb-14 rounded-brand-lg border border-line bg-muted p-6">
             <p className="text-sm leading-relaxed text-ink-muted">
               <strong className="font-semibold text-primary">
-                A note on general guidance:
+                {pages.blogPost.disclaimerLabel}
               </strong>{" "}
-              This article is general information, not advice on your specific
-              situation, and tax rules change. Before acting on anything here,
-              talk it through with a CPA who knows your facts —{" "}
+              {pages.blogPost.disclaimerBody}{" "}
               <Link href="/contact" className="font-medium text-accent hover:underline">
-                including us
+                {pages.blogPost.disclaimerLink}
               </Link>
               .
             </p>
@@ -199,14 +198,14 @@ export default async function BlogPostPage({
           <div className="mb-16 flex flex-col gap-4 rounded-brand-lg border border-line p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-serif text-lg font-semibold text-primary">
-                Questions about how this applies to you?
+                {pages.blogPost.inlineCtaTitle}
               </p>
               <p className="mt-1 text-sm text-ink-muted">
-                Thirty minutes, no charge, no obligation.
+                {pages.blogPost.inlineCtaBody}
               </p>
             </div>
             <div className="flex shrink-0 gap-3">
-              <Button href={site.consultationUrl}>Schedule a call</Button>
+              <Button href={site.consultationUrl}>{pages.blogPost.inlineCtaLabel}</Button>
             </div>
           </div>
         </Container>
@@ -216,8 +215,8 @@ export default async function BlogPostPage({
         <Section tone="muted" ariaLabelledBy="related-posts-heading">
           <SectionHeading
             id="related-posts-heading"
-            eyebrow="Keep reading"
-            title="Related articles"
+            eyebrow={pages.blogPost.relatedEyebrow}
+            title={pages.blogPost.relatedTitle}
           />
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (

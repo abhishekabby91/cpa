@@ -1,4 +1,5 @@
 import { testimonials } from "@/content/testimonials";
+import { home } from "@/content/copy";
 import { TestimonialCard } from "@/components/cards/TestimonialCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -15,8 +16,8 @@ export function Testimonials({ limit = 3 }: { limit?: number }) {
     <Section tone="muted" ariaLabelledBy="testimonials-heading">
       <SectionHeading
         id="testimonials-heading"
-        eyebrow="Client Experience"
-        title="What clients say about working with us"
+        eyebrow={home.testimonials.eyebrow}
+        title={home.testimonials.title}
         align="center"
       />
 

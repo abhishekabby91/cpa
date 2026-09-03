@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/content/site";
 import { team } from "@/content/team";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { PageHero } from "@/components/sections/PageHero";
@@ -20,12 +21,12 @@ export default function TeamPage() {
   return (
     <>
       <PageHero
-        eyebrow="Our Team"
-        title="You'll know exactly who is doing your work"
-        lead="Every client is assigned a lead accountant who stays with the relationship year over year — so you're not re-explaining your business each January."
+        eyebrow={pages.team.eyebrow}
+        title={pages.team.title}
+        lead={pages.team.lead}
       >
         <Button href={site.consultationUrl} size="lg">
-          Schedule a Consultation
+          {actions.consult}
         </Button>
       </PageHero>
 
@@ -42,8 +43,8 @@ export default function TeamPage() {
       </Section>
 
       <CtaBand
-        title="Want to meet the person who'd handle your work?"
-        body="Book a consultation and we'll pair you with the lead accountant whose practice fits your situation."
+        title={pages.team.ctaTitle}
+        body={pages.team.ctaBody}
       />
     </>
   );

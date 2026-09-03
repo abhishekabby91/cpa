@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { cta } from "@/content/copy";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
@@ -8,11 +9,11 @@ import { Icon } from "@/components/ui/Icon";
  * pages pass copy specific to what the reader just read.
  */
 export function CtaBand({
-  title = "Ready to take control of your finances?",
-  body = "Tell us what's going on and we'll tell you what we'd do about it — including when that's less than you expected.",
-  primaryLabel = "Schedule a Consultation",
+  title = cta.title,
+  body = cta.body,
+  primaryLabel = cta.primaryLabel,
   primaryHref = site.consultationUrl,
-  secondaryLabel = "Contact our team",
+  secondaryLabel = cta.secondaryLabel,
   secondaryHref = "/contact",
 }: {
   title?: string;
@@ -45,20 +46,16 @@ export function CtaBand({
               </h2>
               <p className="mt-3 text-white/75">{body}</p>
 
-              <p className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/60">
-                <span className="inline-flex items-center gap-1.5">
-                  <Icon name="check" className="h-3.5 w-3.5" />
-                  30 minutes
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Icon name="check" className="h-3.5 w-3.5" />
-                  No charge
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Icon name="check" className="h-3.5 w-3.5" />
-                  No obligation
-                </span>
-              </p>
+              {cta.chips.length ? (
+                <p className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/60">
+                  {cta.chips.map((chip) => (
+                    <span key={chip} className="inline-flex items-center gap-1.5">
+                      <Icon name="check" className="h-3.5 w-3.5" />
+                      {chip}
+                    </span>
+                  ))}
+                </p>
+              ) : null}
             </div>
 
             <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { locations } from "@/content/locations";
 import { site } from "@/content/site";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { PageHero } from "@/components/sections/PageHero";
@@ -21,9 +22,9 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Contact"
-        title="Tell us what's going on"
-        lead="Send a note, call the office, or book a consultation directly. New inquiries get a response within one business day."
+        eyebrow={pages.contact.eyebrow}
+        title={pages.contact.title}
+        lead={pages.contact.lead}
       />
 
       <Breadcrumbs items={[{ name: "Contact", href: "/contact" }]} />
@@ -32,9 +33,9 @@ export default function ContactPage() {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Form */}
           <div className="lg:col-span-7">
-            <h2 className="text-2xl">Send us a message</h2>
+            <h2 className="text-2xl">{pages.contact.formTitle}</h2>
             <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-ink-muted">
-              A couple of sentences about your situation is plenty to start.
+              {pages.contact.formLead}
             </p>
             <div className="mt-8">
               <ContactForm />
@@ -44,7 +45,7 @@ export default function ContactPage() {
           {/* Contact details */}
           <aside className="lg:col-span-5">
             <div className="rounded-brand-lg border border-line bg-muted p-7">
-              <h2 className="text-lg">Reach us directly</h2>
+              <h2 className="text-lg">{pages.contact.detailsTitle}</h2>
 
               <dl className="mt-6 space-y-6">
                 <div className="flex gap-4">
@@ -58,7 +59,7 @@ export default function ContactPage() {
                       {site.phone}
                     </a>
                     <p className="mt-0.5 text-sm text-ink-muted">
-                      Fastest way to reach us during office hours
+                      {pages.contact.phoneNote}
                     </p>
                   </dd>
                 </div>
@@ -74,7 +75,7 @@ export default function ContactPage() {
                       {site.email}
                     </a>
                     <p className="mt-0.5 text-sm text-ink-muted">
-                      For general questions and document requests
+                      {pages.contact.emailNote}
                     </p>
                   </dd>
                 </div>
@@ -100,7 +101,7 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       className="mt-1.5 inline-block text-sm font-medium text-accent hover:underline"
                     >
-                      Get directions →
+                      {actions.getDirections} →
                     </a>
                   </dd>
                 </div>
@@ -122,7 +123,7 @@ export default function ContactPage() {
               {locations.length > 1 ? (
                 <div className="mt-7 border-t border-line pt-6">
                   <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
-                    Other offices
+                    {pages.contact.otherOfficesLabel}
                   </p>
                   <ul className="mt-3 space-y-2">
                     {locations.slice(1).map((location) => (
@@ -146,13 +147,10 @@ export default function ContactPage() {
               <Icon name="lock" className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
               <div>
                 <p className="text-sm font-semibold text-primary">
-                  Sending documents securely
+                  {pages.contact.securityTitle}
                 </p>
                 <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
-                  Please don&rsquo;t email Social Security numbers, account
-                  numbers, or tax documents. Once we connect, we&rsquo;ll send an
-                  encrypted portal link for anything sensitive. We will never ask
-                  for those details by email or text.
+                  {pages.contact.securityBody}
                 </p>
               </div>
             </div>
@@ -165,16 +163,16 @@ export default function ContactPage() {
         <Container>
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-xl">Prefer to book a time directly?</h2>
+              <h2 className="text-xl">{pages.contact.scheduleNudgeTitle}</h2>
               <p className="mt-1.5 text-[0.9375rem] text-ink-muted">
-                Pick a slot on our consultation page — 30 minutes, no charge.
+                {pages.contact.scheduleNudgeBody}
               </p>
             </div>
             <Link
               href={site.consultationUrl}
               className="inline-flex shrink-0 items-center justify-center rounded-brand bg-accent px-6 py-3.5 font-semibold text-accent-fg transition-colors hover:bg-accent-hover"
             >
-              Schedule a Consultation
+              {actions.consult}
             </Link>
           </div>
         </Container>

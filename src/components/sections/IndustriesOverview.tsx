@@ -1,4 +1,5 @@
 import { industries } from "@/content/industries";
+import { actions, home } from "@/content/copy";
 import { IndustryCard } from "@/components/cards/IndustryCard";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
@@ -11,12 +12,12 @@ export function IndustriesOverview() {
         <div className="lg:col-span-4">
           <SectionHeading
             id="industries-heading"
-            eyebrow="Industries"
-            title="We know how your business actually makes money"
-            lead="Job costing and WIP look nothing like matter-level realization, which looks nothing like passive activity grouping. Depth in a handful of industries beats a claim to serve everyone."
+            eyebrow={home.industries.eyebrow}
+            title={home.industries.title}
+            lead={home.industries.lead}
           />
           <Button href="/industries" variant="secondary" className="mt-7">
-            All industries
+            {actions.allIndustries}
           </Button>
         </div>
 

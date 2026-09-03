@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
+import { actions } from "@/content/copy";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
@@ -206,7 +207,7 @@ export function Header() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <Button href={site.consultationUrl} size="md">
-              Schedule a Consultation
+              {actions.consult}
             </Button>
           </div>
 
@@ -312,7 +313,7 @@ export function Header() {
 
             <div className="space-y-3 border-t border-line py-5">
               <Button href={site.consultationUrl} size="lg" className="w-full">
-                Schedule a Consultation
+                {actions.consult}
               </Button>
               <Button
                 href={`tel:${site.phoneHref}`}

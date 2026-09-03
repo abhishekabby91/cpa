@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { industries } from "@/content/industries";
+import { actions, pages } from "@/content/copy";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -22,12 +23,12 @@ export default function IndustriesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Industries"
-        title="Depth in a handful of industries beats a claim to serve everyone"
-        lead="Job costing looks nothing like matter-level realization, which looks nothing like passive activity grouping. These are the sectors where we already know what your numbers should look like."
+        eyebrow={pages.industries.eyebrow}
+        title={pages.industries.title}
+        lead={pages.industries.lead}
       >
         <Button href={site.consultationUrl} size="lg">
-          Schedule a Consultation
+          {actions.consult}
         </Button>
       </PageHero>
 
@@ -71,7 +72,7 @@ export default function IndustriesPage() {
                 </ul>
 
                 <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
-                  How we help {industry.name.toLowerCase()}
+                  {pages.industries.cardCta(industry.name.toLowerCase())}
                   <svg
                     viewBox="0 0 16 16"
                     className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1"
@@ -92,8 +93,8 @@ export default function IndustriesPage() {
       </Section>
 
       <CtaBand
-        title="Don't see your industry?"
-        body="We work with businesses outside these sectors too — and we'll tell you honestly if your situation calls for a firm with a different specialty."
+        title={pages.industries.ctaTitle}
+        body={pages.industries.ctaBody}
       />
     </>
   );

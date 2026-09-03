@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { locations } from "@/content/locations";
+import { actions, pages } from "@/content/copy";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -20,12 +21,12 @@ export default function LocationsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Locations"
-        title="Meet in person, or work with us entirely remotely"
-        lead="Most of our work happens through a secure portal and video calls. The offices are here when you'd rather sit across a table."
+        eyebrow={pages.locations.eyebrow}
+        title={pages.locations.title}
+        lead={pages.locations.lead}
       >
         <Button href={site.consultationUrl} size="lg">
-          Schedule a Consultation
+          {actions.consult}
         </Button>
       </PageHero>
 
@@ -42,8 +43,8 @@ export default function LocationsPage() {
       </Section>
 
       <CtaBand
-        title="Outside our metro?"
-        body="We file in multiple states and work with clients across the country. Distance is rarely the constraint — tell us what you need."
+        title={pages.locations.ctaTitle}
+        body={pages.locations.ctaBody}
       />
     </>
   );

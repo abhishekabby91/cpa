@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { processSteps } from "@/content/firm";
 import { site } from "@/content/site";
+import { cta, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { ContactForm } from "@/components/forms/ContactForm";
@@ -13,33 +14,6 @@ export const metadata: Metadata = pageMetadata({
     "Book a 30-minute consultation with a CPA. No charge, no obligation — a working conversation about your situation and what we'd recommend.",
   path: "/schedule",
 });
-
-const expectations = [
-  {
-    icon: "clock" as const,
-    title: "About 30 minutes",
-    description:
-      "Long enough to understand your situation, short enough to fit in a working day.",
-  },
-  {
-    icon: "users" as const,
-    title: "You'll speak with a CPA",
-    description:
-      "Not a salesperson working from a script. The person on the call does the work.",
-  },
-  {
-    icon: "clipboard" as const,
-    title: "Bring last year's return",
-    description:
-      "Helpful but not required. If you have it handy, the conversation gets more specific.",
-  },
-  {
-    icon: "document" as const,
-    title: "You'll leave with our read",
-    description:
-      "What we'd recommend, roughly what it would cost, and whether you need it at all.",
-  },
-];
 
 /**
  * Consultation page.
@@ -67,30 +41,24 @@ export default function SchedulePage() {
         <Container className="relative">
           <div className="max-w-2xl py-14 sm:py-16 lg:py-20">
             <p className="rule-accent mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-white/70 [&::before]:bg-[var(--color-highlight)]">
-              Consultation
+              {pages.schedule.eyebrow}
             </p>
             <h1 className="text-[2.125rem] leading-[1.1] text-primary-fg sm:text-[2.75rem] lg:text-[3.125rem]">
-              Let&rsquo;s talk about your financial goals
+              {pages.schedule.title}
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-white/75">
-              A working conversation, not a pitch. Tell us what&rsquo;s going on
-              and we&rsquo;ll tell you what we&rsquo;d actually do about it —
-              including when the answer is less than you expected.
+              {pages.schedule.lead}
             </p>
-            <p className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/70">
-              <span className="inline-flex items-center gap-2">
-                <Icon name="check" className="h-4 w-4 text-[var(--color-highlight)]" />
-                30 minutes
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Icon name="check" className="h-4 w-4 text-[var(--color-highlight)]" />
-                No charge
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Icon name="check" className="h-4 w-4 text-[var(--color-highlight)]" />
-                No obligation
-              </span>
-            </p>
+            {cta.chips.length ? (
+              <p className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/70">
+                {cta.chips.map((chip) => (
+                  <span key={chip} className="inline-flex items-center gap-2">
+                    <Icon name="check" className="h-4 w-4 text-[var(--color-highlight)]" />
+                    {chip}
+                  </span>
+                ))}
+              </p>
+            ) : null}
           </div>
         </Container>
       </section>
@@ -115,10 +83,9 @@ export default function SchedulePage() {
                 the headers in next.config.ts.
               */}
               <div className="rounded-brand-lg border border-line bg-surface p-7 shadow-card sm:p-8">
-                <h2 className="text-2xl">Request a time</h2>
+                <h2 className="text-2xl">{pages.schedule.formTitle}</h2>
                 <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-ink-muted">
-                  Tell us a little about your situation and we&rsquo;ll come back
-                  with times that work — usually the same business day.
+                  {pages.schedule.formLead}
                 </p>
                 <div className="mt-8">
                   <ContactForm compact />
@@ -127,9 +94,9 @@ export default function SchedulePage() {
             </div>
 
             <aside className="lg:col-span-5">
-              <h2 className="text-xl">What to expect</h2>
+              <h2 className="text-xl">{pages.schedule.expectationsTitle}</h2>
               <ul className="mt-6 space-y-5">
-                {expectations.map((item) => (
+                {pages.schedule.expectations.map((item) => (
                   <li key={item.title} className="flex gap-4">
                     <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-brand bg-accent/8 text-accent">
                       <Icon name={item.icon} className="h-4 w-4" />
@@ -148,7 +115,7 @@ export default function SchedulePage() {
 
               <div className="mt-9 rounded-brand-lg border border-line bg-muted p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
-                  Prefer to call?
+                  {pages.schedule.callTitle}
                 </p>
                 <a
                   href={`tel:${site.phoneHref}`}
@@ -167,7 +134,7 @@ export default function SchedulePage() {
 
               <div className="mt-6 rounded-brand-lg border border-line p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
-                  What happens next
+                  {pages.schedule.nextTitle}
                 </p>
                 <ol className="mt-4 space-y-3">
                   {processSteps.slice(0, 3).map((step) => (

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getService, getServices, services } from "@/content/services";
 import { industries } from "@/content/industries";
 import { site } from "@/content/site";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { faqSchema, serviceSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -59,7 +60,7 @@ export default async function ServicePage({
       <PageHero eyebrow={service.name} title={service.headline} lead={service.intro}>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href={site.consultationUrl} size="lg">
-            Schedule a Consultation
+            {actions.consult}
           </Button>
           <Button href={`tel:${site.phoneHref}`} variant="outlineDark" size="lg" external>
             <Icon name="phone" className="h-4 w-4" />
@@ -81,8 +82,8 @@ export default async function ServicePage({
           <div className="lg:col-span-5">
             <SectionHeading
               id="challenges-heading"
-              eyebrow="Sound familiar?"
-              title="The situations that bring people to us"
+              eyebrow={pages.serviceDetail.painEyebrow}
+              title={pages.serviceDetail.painTitle}
             />
           </div>
           <ul className="space-y-4 lg:col-span-7">
@@ -106,9 +107,9 @@ export default async function ServicePage({
       <Section tone="muted" ariaLabelledBy="includes-heading">
         <SectionHeading
           id="includes-heading"
-          eyebrow="What's included"
-          title={`What ${service.name.toLowerCase()} covers`}
-          lead="Concrete deliverables, not a list of adjectives."
+          eyebrow={pages.serviceDetail.includesEyebrow}
+          title={pages.serviceDetail.includesTitle(service.name.toLowerCase())}
+          lead={pages.serviceDetail.includesLead}
         />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {service.includes.map((item, index) => (
@@ -133,8 +134,8 @@ export default async function ServicePage({
           <div>
             <SectionHeading
               id="benefits-heading"
-              eyebrow="What changes"
-              title="What you get out of it"
+              eyebrow={pages.serviceDetail.benefitsEyebrow}
+              title={pages.serviceDetail.benefitsTitle}
             />
             <ul className="mt-8 space-y-4">
               {service.benefits.map((benefit) => (
@@ -149,7 +150,7 @@ export default async function ServicePage({
           </div>
 
           <div className="rounded-brand-lg border border-line bg-muted p-7">
-            <h2 className="text-xl">Who this is for</h2>
+            <h2 className="text-xl">{pages.serviceDetail.audienceTitle}</h2>
             <ul className="mt-6 space-y-3">
               {service.idealFor.map((audience) => (
                 <li key={audience} className="flex gap-3 text-[0.9375rem] leading-relaxed text-ink-muted">
@@ -162,7 +163,7 @@ export default async function ServicePage({
             {relevantIndustries.length ? (
               <div className="mt-7 border-t border-line pt-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
-                  Industry-specific guidance
+                  {pages.serviceDetail.industriesLabel}
                 </p>
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {relevantIndustries.map((industry) => (
@@ -191,13 +192,13 @@ export default async function ServicePage({
             <div className="lg:col-span-4">
               <SectionHeading
                 id="service-faq-heading"
-                eyebrow="Questions"
-                title={`${service.name} FAQs`}
+                eyebrow={pages.serviceDetail.faqEyebrow}
+                title={pages.serviceDetail.faqTitle(service.name)}
               />
               <p className="mt-5 text-[0.9375rem] leading-relaxed text-ink-muted">
-                More questions?{" "}
+                {pages.serviceDetail.faqHelperLead}{" "}
                 <Link href="/faqs" className="font-medium text-accent hover:underline">
-                  Read all FAQs
+                  {pages.serviceDetail.faqHelperLink}
                 </Link>
                 .
               </p>
@@ -214,8 +215,8 @@ export default async function ServicePage({
         <Section tone="muted" ariaLabelledBy="related-heading">
           <SectionHeading
             id="related-heading"
-            eyebrow="Related"
-            title="Services that often go with this"
+            eyebrow={pages.serviceDetail.relatedEyebrow}
+            title={pages.serviceDetail.relatedTitle}
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
@@ -226,8 +227,8 @@ export default async function ServicePage({
       ) : null}
 
       <CtaBand
-        title={`Let's talk about ${service.name.toLowerCase()}`}
-        body="Thirty minutes, no charge. We'll tell you what we'd do and what it would cost before you commit to anything."
+        title={pages.serviceDetail.ctaTitle(service.name.toLowerCase())}
+        body={pages.serviceDetail.ctaBody}
       />
 
       <JsonLd data={serviceSchema(service)} />

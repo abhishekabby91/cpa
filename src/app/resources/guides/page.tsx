@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { guides } from "@/content/firm";
+import { pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { PageHero } from "@/components/sections/PageHero";
@@ -20,9 +21,9 @@ export default function GuidesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Guides & Checklists"
-        title="Practical documents, not lead magnets"
-        lead="Work through these before an appointment and the first meeting gets a lot more useful."
+        eyebrow={pages.guides.eyebrow}
+        title={pages.guides.title}
+        lead={pages.guides.lead}
       />
 
       <Breadcrumbs
@@ -54,7 +55,7 @@ export default function GuidesPage() {
                 </p>
 
                 <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
-                  Request this guide
+                  {pages.guides.cardCta}
                   <svg
                     viewBox="0 0 16 16"
                     className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1"

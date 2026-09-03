@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
+import { pages } from "@/content/copy";
 import type { Location } from "@/content/types";
 import { formatAddress } from "@/lib/utils";
 
@@ -50,7 +51,7 @@ export function LocationCard({
       </dl>
 
       <p className="mt-5 text-sm font-semibold text-accent">
-        View office details →
+        {pages.locations.cardCta}
       </p>
     </article>
   );

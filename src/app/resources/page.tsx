@@ -4,6 +4,7 @@ import { guides } from "@/content/firm";
 import { homepageFaqs } from "@/content/faqs";
 import { sortedPosts } from "@/content/posts";
 import { site } from "@/content/site";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { PageHero } from "@/components/sections/PageHero";
@@ -28,16 +29,16 @@ export default function ResourcesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Resources"
-        title="Plain explanations of the things clients actually ask about"
-        lead="No gated fluff and no recycled tax-season listicles. These are the answers we give on the phone, written down."
+        eyebrow={pages.resources.eyebrow}
+        title={pages.resources.title}
+        lead={pages.resources.lead}
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href="/resources/blog" size="lg">
-            Browse all articles
+            {pages.resources.browseCta}
           </Button>
           <Button href="/resources/guides" variant="outlineDark" size="lg">
-            Guides &amp; checklists
+            {pages.resources.guidesCta}
           </Button>
         </div>
       </PageHero>
@@ -48,12 +49,12 @@ export default function ResourcesPage() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading
             id="latest-heading"
-            eyebrow="Latest"
-            title="Recent articles"
+            eyebrow={pages.resources.latestEyebrow}
+            title={pages.resources.latestTitle}
             className="max-w-2xl"
           />
           <Button href="/resources/blog" variant="secondary">
-            All articles
+            {actions.allArticles}
           </Button>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -69,13 +70,13 @@ export default function ResourcesPage() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading
             id="guides-heading"
-            eyebrow="Downloads"
-            title="Checklists and guides"
-            lead="Practical documents you can work through before an appointment."
+            eyebrow={pages.resources.downloadsEyebrow}
+            title={pages.resources.downloadsTitle}
+            lead={pages.resources.downloadsLead}
             className="max-w-2xl"
           />
           <Button href="/resources/guides" variant="secondary">
-            All guides
+            {pages.resources.allGuidesCta}
           </Button>
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -107,11 +108,11 @@ export default function ResourcesPage() {
           <div className="lg:col-span-4">
             <SectionHeading
               id="resources-faq-heading"
-              eyebrow="FAQs"
-              title="Questions we hear most"
+              eyebrow={pages.resources.faqEyebrow}
+              title={pages.resources.faqTitle}
             />
             <Button href="/faqs" variant="secondary" className="mt-7">
-              All FAQs
+              {actions.allFaqs}
             </Button>
           </div>
           <div className="lg:col-span-8">
@@ -121,8 +122,8 @@ export default function ResourcesPage() {
       </Section>
 
       <CtaBand
-        title="Have a question these don't answer?"
-        body={`Call ${site.phone} or send a note. We answer client questions year-round, not just in filing season.`}
+        title={pages.resources.ctaTitle}
+        body={pages.resources.ctaBody(site.phone)}
       />
     </>
   );

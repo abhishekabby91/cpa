@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { serviceCategories } from "@/content/services";
+import { actions, home } from "@/content/copy";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
@@ -11,9 +12,9 @@ export function ServicesOverview() {
     <Section id="services" ariaLabelledBy="services-heading">
       <SectionHeading
         id="services-heading"
-        eyebrow="What We Do"
-        title="Three practices, one team that talks to each other"
-        lead="Tax, accounting, and advisory work under one roof — so the return reflects the books, and the plan reflects both."
+        eyebrow={home.services.eyebrow}
+        title={home.services.title}
+        lead={home.services.lead}
       />
 
       <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -63,14 +64,14 @@ export function ServicesOverview() {
 
       <div className="mt-10 flex flex-wrap items-center gap-4">
         <Button href="/services" variant="secondary">
-          View all services
+          {actions.allServices}
         </Button>
         <p className="text-sm text-ink-muted">
-          Not sure what you need?{" "}
+          {home.services.helperLead}{" "}
           <Link href="/contact" className="font-medium text-accent hover:underline">
-            Tell us your situation
+            {home.services.helperLink}
           </Link>{" "}
-          and we&rsquo;ll say so plainly.
+          {home.services.helperTrail}
         </p>
       </div>
     </Section>

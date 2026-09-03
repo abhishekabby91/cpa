@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { serviceCategories } from "@/content/services";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { PageHero } from "@/components/sections/PageHero";
@@ -23,16 +24,16 @@ export default function ServicesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Services"
-        title="Everything a growing business and its owners need from a CPA"
-        lead="Three practices under one roof, staffed by people who talk to each other — so the tax return reflects the books, and the plan reflects both."
+        eyebrow={pages.services.eyebrow}
+        title={pages.services.title}
+        lead={pages.services.lead}
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href={site.consultationUrl} size="lg">
-            Schedule a Consultation
+            {actions.consult}
           </Button>
           <Button href="/contact" variant="outlineDark" size="lg">
-            Ask what you need
+            {pages.services.secondaryCta}
           </Button>
         </div>
       </PageHero>
@@ -73,8 +74,8 @@ export default function ServicesPage() {
 
       <Process />
       <CtaBand
-        title="Not sure which of these you need?"
-        body="Describe your situation and we'll tell you what we'd actually recommend — including when that's less than you came in for."
+        title={pages.services.ctaTitle}
+        body={pages.services.ctaBody}
       />
     </>
   );

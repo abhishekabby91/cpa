@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 import { LegalPage } from "@/components/sections/LegalPage";
+import { pages } from "@/content/copy";
 
 export const metadata: Metadata = pageMetadata({
   title: "Accessibility Statement",
@@ -12,10 +13,10 @@ export const metadata: Metadata = pageMetadata({
 export default function AccessibilityPage() {
   return (
     <LegalPage
-      title="Accessibility Statement"
-      updated="January 1, 2026"
+      title={pages.legal.accessibility.title}
+      updated={pages.legal.accessibility.updated}
       breadcrumb={{ name: "Accessibility", href: "/accessibility" }}
-      intro="We want this site to be usable by everyone, including people using assistive technology."
+      intro={pages.legal.accessibility.intro}
     >
       <h2>Our commitment</h2>
       <p>

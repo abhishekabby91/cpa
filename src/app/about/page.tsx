@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { aboutContent, stats } from "@/content/firm";
 import { site } from "@/content/site";
+import { actions, pages } from "@/content/copy";
 import { featuredTeam } from "@/content/team";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -30,10 +31,10 @@ export default function AboutPage() {
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href="/team" size="lg">
-            Meet our team
+            {actions.meetTeam}
           </Button>
           <Button href={site.consultationUrl} variant="outlineDark" size="lg">
-            Schedule a Consultation
+            {actions.consult}
           </Button>
         </div>
       </PageHero>
@@ -43,7 +44,11 @@ export default function AboutPage() {
       <Section ariaLabelledBy="story-heading">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
-            <SectionHeading id="story-heading" eyebrow="Our story" title="How we got here" />
+            <SectionHeading
+              id="story-heading"
+              eyebrow={pages.about.storyEyebrow}
+              title={pages.about.storyTitle}
+            />
             <div className="mt-8 space-y-5 text-[1.0625rem] leading-relaxed text-ink-muted">
               {aboutContent.story.map((paragraph) => (
                 <p key={paragraph.slice(0, 40)}>{paragraph}</p>
@@ -53,7 +58,7 @@ export default function AboutPage() {
 
           <aside className="lg:col-span-5">
             <div className="rounded-brand-lg border border-line bg-muted p-7">
-              <h2 className="text-lg">The firm at a glance</h2>
+              <h2 className="text-lg">{pages.about.glanceTitle}</h2>
               <dl className="mt-6 space-y-5">
                 {stats.map((stat) => (
                   <div
@@ -74,7 +79,7 @@ export default function AboutPage() {
               {site.credentials.length ? (
                 <div className="mt-7 border-t border-line pt-6">
                   <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
-                    Credentials &amp; memberships
+                    {pages.about.credentialsLabel}
                   </p>
                   <ul className="mt-3 space-y-2">
                     {site.credentials.map((credential) => (
@@ -101,9 +106,9 @@ export default function AboutPage() {
       <Section tone="muted" ariaLabelledBy="values-heading">
         <SectionHeading
           id="values-heading"
-          eyebrow="How we work"
-          title="Four commitments we're willing to be held to"
-          lead="Values are only useful if a client could tell whether you kept them. These are written so you could."
+          eyebrow={pages.about.valuesEyebrow}
+          title={pages.about.valuesTitle}
+          lead={pages.about.valuesLead}
         />
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {aboutContent.values.map((value, index) => (
@@ -129,12 +134,12 @@ export default function AboutPage() {
           <div className="flex flex-wrap items-end justify-between gap-6">
             <SectionHeading
               id="leadership-heading"
-              eyebrow="Leadership"
-              title="The people you'd actually be working with"
+              eyebrow={pages.about.leadershipEyebrow}
+              title={pages.about.leadershipTitle}
               className="max-w-2xl"
             />
             <Button href="/team" variant="secondary">
-              View the full team
+              {pages.about.leadershipCta}
             </Button>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 import { LegalPage } from "@/components/sections/LegalPage";
+import { pages } from "@/content/copy";
 
 export const metadata: Metadata = pageMetadata({
   title: "Terms of Use",
@@ -12,10 +13,10 @@ export const metadata: Metadata = pageMetadata({
 export default function TermsPage() {
   return (
     <LegalPage
-      title="Terms of Use"
-      updated="January 1, 2026"
-      breadcrumb={{ name: "Terms of Use", href: "/terms" }}
-      intro="The terms that govern your use of this website."
+      title={pages.legal.terms.title}
+      updated={pages.legal.terms.updated}
+      breadcrumb={{ name: pages.legal.terms.title, href: "/terms" }}
+      intro={pages.legal.terms.intro}
     >
       <p className="rounded-brand border-l-4 border-accent bg-muted p-4 text-sm">
         <strong>Template notice —</strong> these terms are a starting point for a

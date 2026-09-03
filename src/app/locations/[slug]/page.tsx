@@ -5,6 +5,7 @@ import { getLocation, locations } from "@/content/locations";
 import { getServices } from "@/content/services";
 import { team } from "@/content/team";
 import { site } from "@/content/site";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { faqSchema, locationSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -62,7 +63,7 @@ export default async function LocationPage({
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href={site.consultationUrl} size="lg">
-            Schedule a Consultation
+            {actions.consult}
           </Button>
           <Button href={`tel:${location.phoneHref}`} variant="outlineDark" size="lg" external>
             <Icon name="phone" className="h-4 w-4" />
@@ -84,8 +85,8 @@ export default async function LocationPage({
           <div className="lg:col-span-5">
             <SectionHeading
               id="office-heading"
-              eyebrow="Office"
-              title={`Visiting our ${location.city} office`}
+              eyebrow={pages.locationDetail.officeEyebrow}
+              title={pages.locationDetail.officeTitle(location.city)}
             />
 
             <dl className="mt-8 space-y-6">
@@ -110,7 +111,7 @@ export default async function LocationPage({
                     rel="noopener noreferrer"
                     className="mt-2 inline-block text-sm font-medium text-accent hover:underline"
                   >
-                    Get directions →
+                    {actions.getDirections} →
                   </a>
                 </dd>
               </div>
@@ -187,7 +188,7 @@ export default async function LocationPage({
                   rel="noopener noreferrer"
                   className="mx-auto mt-5 inline-flex items-center gap-2 rounded-brand bg-accent px-5 py-2.5 text-sm font-semibold text-accent-fg"
                 >
-                  Get directions
+                  {actions.getDirections}
                 </a>
               </div>
             )}
@@ -200,9 +201,9 @@ export default async function LocationPage({
         <Section tone="muted" ariaLabelledBy="areas-heading">
           <SectionHeading
             id="areas-heading"
-            eyebrow="Areas served"
-            title={`Where our ${location.city} clients are`}
-            lead="These are the communities this office actually works with — not a radius drawn on a map."
+            eyebrow={pages.locationDetail.areasEyebrow}
+            title={pages.locationDetail.areasTitle(location.city)}
+            lead={pages.locationDetail.areasLead}
           />
           <ul className="mt-8 flex flex-wrap gap-2.5">
             {location.areasServed.map((area) => (
@@ -222,8 +223,8 @@ export default async function LocationPage({
         <Section ariaLabelledBy="location-services-heading">
           <SectionHeading
             id="location-services-heading"
-            eyebrow="Services"
-            title={`Available from our ${location.city} office`}
+            eyebrow={pages.locationDetail.servicesEyebrow}
+            title={pages.locationDetail.servicesTitle(location.city)}
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {officeServices.map((service, index) => (
@@ -233,9 +234,9 @@ export default async function LocationPage({
             ))}
           </div>
           <p className="mt-8 text-sm text-ink-muted">
-            Looking for something else?{" "}
+            {pages.locationDetail.servicesHelperLead}{" "}
             <Link href="/services" className="font-medium text-accent hover:underline">
-              See all services
+              {pages.locationDetail.servicesHelperLink}
             </Link>
             .
           </p>
@@ -247,8 +248,8 @@ export default async function LocationPage({
         <Section tone="muted" ariaLabelledBy="location-team-heading">
           <SectionHeading
             id="location-team-heading"
-            eyebrow="Your team"
-            title={`Working from ${location.city}`}
+            eyebrow={pages.locationDetail.teamEyebrow}
+            title={pages.locationDetail.teamTitle(location.city)}
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {officeTeam.map((member) => (
@@ -266,8 +267,8 @@ export default async function LocationPage({
             <div className="lg:col-span-4">
               <SectionHeading
                 id="location-faq-heading"
-                eyebrow="Questions"
-                title={`${location.city} office FAQs`}
+                eyebrow={pages.locationDetail.faqEyebrow}
+                title={pages.locationDetail.faqTitle(location.city)}
               />
             </div>
             <div className="lg:col-span-8">
@@ -278,8 +279,8 @@ export default async function LocationPage({
       ) : null}
 
       <CtaBand
-        title={`Talk to our ${location.city} team`}
-        body="Book a consultation, or call the office directly and we'll find a time that works."
+        title={pages.locationDetail.ctaTitle(location.city)}
+        body={pages.locationDetail.ctaBody}
         secondaryLabel={`Call ${location.phone}`}
         secondaryHref={`tel:${location.phoneHref}`}
       />

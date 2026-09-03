@@ -1,4 +1,5 @@
 import { differentiators } from "@/content/firm";
+import { home } from "@/content/copy";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -8,9 +9,9 @@ export function WhyChooseUs() {
     <Section tone="muted" ariaLabelledBy="why-heading">
       <SectionHeading
         id="why-heading"
-        eyebrow="Why Firms Stay"
-        title="The differences show up in ordinary weeks"
-        lead="Not in a mission statement — in whether the call gets returned, whether the close lands on the date, and whether anyone told you in October."
+        eyebrow={home.whyChooseUs.eyebrow}
+        title={home.whyChooseUs.title}
+        lead={home.whyChooseUs.lead}
       />
 
       <div className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">

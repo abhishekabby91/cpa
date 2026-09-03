@@ -4,9 +4,13 @@ A reusable, white-label website for US CPA firms. Built with Next.js 15 (App
 Router), TypeScript, and Tailwind CSS v4.
 
 Everything that changes between firms — name, branding, colors, services,
-industries, team, offices, testimonials, FAQs, and articles — lives in typed
-config files under `content/`. No component contains firm-specific copy, a
-color value, or a phone number.
+industries, team, offices, testimonials, FAQs, articles, **and every heading
+and line of prose on the site** — lives in typed config files under `content/`.
+No component contains firm-specific copy, a color value, or a phone number.
+
+Selling sites built from this? Read
+[Selling this to multiple firms](#selling-this-to-multiple-firms) and
+[THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md) first.
 
 ---
 
@@ -63,6 +67,7 @@ Two things to verify after changing colors:
 | File | Contains |
 | --- | --- |
 | `content/site.ts` | Firm identity, contact, hours, nav, credentials, theme |
+| `content/copy.ts` | **Every heading, lead, button label and prose block on the site** |
 | `content/services.ts` | Service catalog — each entry generates `/services/[slug]` |
 | `content/industries.ts` | Industry pages — each generates `/industries/[slug]` |
 | `content/team.ts` | Team directory and profiles at `/team/[slug]` |
@@ -91,12 +96,19 @@ and structured data all follow automatically.
 - **Analytics.** Add your script in `src/app/layout.tsx`. If you tighten the
   CSP in `next.config.ts`, allow the provider's domain there too.
 
-### 4. Rewrite the copy
+### 4. Rewrite the copy — this is the step that matters
 
-The bundled copy is written to be *good enough to ship*, which makes it
-tempting to leave alone. Don't. The About story, the differentiators, and the
-FAQ answers are where a site stops reading like a template — and where a real
-firm's actual practice, tone, and specialties belong.
+Open `content/copy.ts`. Every heading, eyebrow, lead paragraph, button label
+and prose block on the site lives there, so you can reword the whole site
+without opening a component.
+
+The bundled copy is written to be *good enough to ship*, which is exactly why
+it's dangerous to leave alone. See
+[Selling this to multiple firms](#selling-this-to-multiple-firms) for why.
+
+Also rewrite the service and industry bodies in `content/services.ts` and
+`content/industries.ts`, and the About story in `content/firm.ts`. Those are
+the largest blocks of indexable text on the site.
 
 ---
 
@@ -134,6 +146,83 @@ list with someone at the firm who can verify each item.
 - [ ] **Contact webhook** configured and tested end to end.
 - [ ] **Team photos** in `/public/team/`, referenced from `content/team.ts`.
       Members without a photo render a monogram rather than a broken image.
+
+---
+
+## Selling this to multiple firms
+
+This repo is set up to be **forked per client**: mark it as a GitHub template,
+and each new engagement starts as an independent copy. That gives you unlimited
+per-client customization, at the cost of fixes not propagating — a bug you fix
+in one fork stays fixed only there. Keep a note of which forks are live so you
+can decide what's worth back-porting.
+
+### Per-client checklist
+
+```bash
+# 1. Create the client repo from this template (GitHub: "Use this template")
+# 2. Clone it, then:
+npm install
+cp .env.example .env.local     # set NEXT_PUBLIC_SITE_URL to the client domain
+npm run dev
+```
+
+Then, in order:
+
+1. `content/site.ts` — name, monogram or logo, colors, contact, hours, offices,
+   credentials, license disclaimer
+2. `content/copy.ts` — **rewrite, don't tweak** (see below)
+3. `content/services.ts`, `industries.ts`, `firm.ts` — rewrite the bodies
+4. `content/team.ts`, `locations.ts`, `faqs.ts` — real people, offices, answers
+5. `content/testimonials.ts` — real approved quotes, or an empty array
+6. `content/posts.ts` — the client's own articles, CPA-reviewed
+7. Work the pre-launch checklist above
+8. Deploy, and set `LICENSE` terms per your client agreement
+
+### The duplicate-content problem
+
+This is the failure mode that kills template-built sites, so it's worth being
+blunt about.
+
+Service and industry pages are the largest block of indexable text on a CPA
+firm's site, and they're the pages that rank for the searches worth having.
+If you sell twenty sites that all carry the bundled *"Decisions made in October
+change April"* page word for word, search engines see twenty near-duplicates.
+They pick one and suppress the rest. The client who bought the site expecting
+organic traffic doesn't get it, and neither do the other nineteen.
+
+Nothing in the architecture stops you from shipping the defaults — that's a
+process problem, not a code problem, and it's why step 4 above says *rewrite*.
+
+A workable minimum per client:
+
+- **Hero headline and subhead** — completely different. This is the line a
+  prospect reads first and the one most likely to be compared.
+- **Service pages** — rewrite `headline`, `intro`, `painPoints`, and the
+  `includes` descriptions. Keep the structure; replace the words.
+- **Industry pages** — same, and cut any industry the firm doesn't actually
+  serve rather than shipping it unedited.
+- **FAQ answers** — rewrite in the firm's own voice, and delete questions they
+  would answer differently.
+- **Articles** — do not ship the bundled six on more than one site. They're
+  reference implementations of the block format, not a content library.
+
+Two things you *can* safely reuse across clients: page structure and section
+labels ("Services", "Questions", "Related"). Google does not penalize shared
+navigation and headings — it's the body prose that has to differ.
+
+### What to reuse between forks
+
+Once you've built two or three client sites, the parts worth copying forward
+are the ones that aren't copy: `src/components`, `src/lib`, the design tokens
+in `src/app/globals.css`, and the shape of `content/types.ts`. Those are the
+same on every site. Everything under `content/` should differ.
+
+If you reach the point where hand-patching forks hurts more than it helps,
+that's the signal to move `src/` into a private npm package and reduce each
+client repo to `content/` plus a deploy config. The content model here is
+already shaped for that split — nothing in `src/` imports from a specific
+client's data, only from the typed interfaces.
 
 ---
 

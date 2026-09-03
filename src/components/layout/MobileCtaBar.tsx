@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
+import { actions } from "@/content/copy";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
@@ -42,14 +43,14 @@ export function MobileCtaBar() {
           className="inline-flex items-center justify-center gap-2 rounded-brand border border-line px-4 py-3 text-sm font-semibold text-primary"
         >
           <Icon name="phone" className="h-4 w-4" />
-          Call
+          {actions.call}
         </a>
         <a
           href={site.consultationUrl}
           tabIndex={visible ? undefined : -1}
           className="inline-flex items-center justify-center rounded-brand bg-accent px-4 py-3 text-sm font-semibold text-accent-fg"
         >
-          Schedule
+          {actions.consultShort}
         </a>
       </div>
     </div>

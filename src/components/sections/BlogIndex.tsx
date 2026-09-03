@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Post } from "@/content/types";
 import { BlogCard } from "@/components/cards/BlogCard";
+import { pages } from "@/content/copy";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,18 +21,22 @@ export function BlogIndex({
   categories: readonly string[];
 }) {
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<string>("All");
+  const [category, setCategory] = useState<string>(pages.blog.allCategories);
 
   // Only offer categories that actually have posts.
   const activeCategories = useMemo(
-    () => ["All", ...categories.filter((c) => posts.some((p) => p.category === c))],
+    () => [
+      pages.blog.allCategories,
+      ...categories.filter((c) => posts.some((p) => p.category === c)),
+    ],
     [categories, posts],
   );
 
   const filtered = useMemo(() => {
     const term = query.trim().toLowerCase();
     return posts.filter((post) => {
-      const matchesCategory = category === "All" || post.category === category;
+      const matchesCategory =
+        category === pages.blog.allCategories || post.category === category;
       if (!matchesCategory) return false;
       if (!term) return true;
       return (
@@ -47,7 +52,7 @@ export function BlogIndex({
       <div className="flex flex-col gap-5 border-b border-line pb-8 lg:flex-row lg:items-center lg:justify-between">
         <div className="relative w-full lg:max-w-sm">
           <label htmlFor="post-search" className="sr-only">
-            Search articles
+            {pages.blog.searchLabel}
           </label>
           <svg
             viewBox="0 0 20 20"
@@ -66,7 +71,7 @@ export function BlogIndex({
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search articles"
+            placeholder={pages.blog.searchPlaceholder}
             className="w-full rounded-brand border border-line bg-surface py-2.5 pl-10 pr-3.5 text-[0.9375rem] text-ink placeholder:text-ink-muted/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
           />
         </div>
@@ -100,20 +105,19 @@ export function BlogIndex({
 
       {filtered.length === 0 ? (
         <div className="py-20 text-center">
-          <p className="font-serif text-xl text-primary">No articles match that search</p>
+          <p className="font-serif text-xl text-primary">{pages.blog.emptyTitle}</p>
           <p className="mx-auto mt-2 max-w-md text-[0.9375rem] text-ink-muted">
-            Try a different term or clear the filters. If you&rsquo;re looking for
-            something specific, ask us directly — it&rsquo;s often faster.
+            {pages.blog.emptyBody}
           </p>
           <button
             type="button"
             onClick={() => {
               setQuery("");
-              setCategory("All");
+              setCategory(pages.blog.allCategories);
             }}
             className="mt-6 rounded-brand border border-line px-4 py-2 text-sm font-semibold text-primary transition-colors hover:border-accent hover:text-accent"
           >
-            Clear filters
+            {pages.blog.clearFilters}
           </button>
         </div>
       ) : (

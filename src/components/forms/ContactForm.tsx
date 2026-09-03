@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { services } from "@/content/services";
+import { actions, forms } from "@/content/copy";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
@@ -125,13 +126,11 @@ export function ContactForm({
       }
 
       setStatus("success");
-      setMessage(result?.message ?? "Thanks — we'll be in touch within one business day.");
+      setMessage(result?.message ?? "");
       form.reset();
     } catch {
       setStatus("error");
-      setMessage(
-        "We couldn't send that. Please try again, or call us directly and we'll take the details over the phone.",
-      );
+      setMessage(forms.contact.errorFallback);
     }
   }
 
@@ -144,7 +143,7 @@ export function ContactForm({
         <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-accent-fg">
           <Icon name="check" className="h-5 w-5" />
         </span>
-        <h3 className="text-xl">Message received</h3>
+        <h3 className="text-xl">{forms.contact.successTitle}</h3>
         <p className="mx-auto mt-2.5 max-w-sm text-[0.9375rem] leading-relaxed text-ink-muted">
           {message}
         </p>
@@ -154,7 +153,7 @@ export function ContactForm({
           className="mt-6"
           onClick={() => setStatus("idle")}
         >
-          Send another message
+          {forms.contact.successAgain}
         </Button>
       </div>
     );
@@ -239,7 +238,7 @@ export function ContactForm({
       ) : null}
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field id="service" label="What can we help with?">
+        <Field id="service" label={forms.contact.serviceLabel}>
           <select
             id="service"
             name="service"
@@ -247,17 +246,17 @@ export function ContactForm({
             className={cn(fieldClass, "appearance-none pr-9")}
             style={selectChevron}
           >
-            <option value="">Not sure yet</option>
+            <option value="">{forms.contact.serviceUnsure}</option>
             {services.map((service) => (
               <option key={service.slug} value={service.slug}>
                 {service.name}
               </option>
             ))}
-            <option value="other">Something else</option>
+            <option value="other">{forms.contact.serviceOther}</option>
           </select>
         </Field>
 
-        <Field id="preferredContact" label="Preferred contact method">
+        <Field id="preferredContact" label={forms.contact.preferredContactLabel}>
           <select
             id="preferredContact"
             name="preferredContact"
@@ -274,10 +273,10 @@ export function ContactForm({
 
       <Field
         id="message"
-        label="How can we help?"
+        label={forms.contact.messageLabel}
         required
         error={errors.message}
-        hint="A couple of sentences is plenty — what's going on, and what prompted you to reach out."
+        hint={forms.contact.messageHint}
       >
         <textarea
           id="message"
@@ -300,15 +299,11 @@ export function ContactForm({
 
       <div className="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center">
         <Button type="submit" size="lg" disabled={status === "submitting"}>
-          {status === "submitting" ? "Sending…" : "Send message"}
+          {status === "submitting" ? actions.sending : actions.sendMessage}
         </Button>
         <p className="flex items-start gap-2 text-xs leading-relaxed text-ink-muted">
           <Icon name="lock" className="mt-px h-3.5 w-3.5 shrink-0" />
-          <span>
-            Your details are used only to respond to this inquiry. Please
-            don&rsquo;t include Social Security numbers, account numbers, or tax
-            documents — we&rsquo;ll send a secure portal link for those.
-          </span>
+          <span>{forms.contact.privacyNote}</span>
         </p>
       </div>
     </form>

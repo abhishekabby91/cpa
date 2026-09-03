@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getIndustry, industries } from "@/content/industries";
 import { getServices } from "@/content/services";
 import { site } from "@/content/site";
+import { actions, pages } from "@/content/copy";
 import { pageMetadata } from "@/lib/seo";
 import { faqSchema } from "@/lib/schema";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -53,7 +54,7 @@ export default async function IndustryPage({
       <PageHero eyebrow={industry.name} title={industry.headline} lead={industry.intro}>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href={site.consultationUrl} size="lg">
-            Schedule a Consultation
+            {actions.consult}
           </Button>
           <Button href={`tel:${site.phoneHref}`} variant="outlineDark" size="lg" external>
             <Icon name="phone" className="h-4 w-4" />
@@ -73,8 +74,8 @@ export default async function IndustryPage({
       <Section ariaLabelledBy="challenges-heading">
         <SectionHeading
           id="challenges-heading"
-          eyebrow="Common challenges"
-          title={`What makes ${industry.name.toLowerCase()} finances different`}
+          eyebrow={pages.industryDetail.challengesEyebrow}
+          title={pages.industryDetail.challengesTitle(industry.name.toLowerCase())}
         />
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {industry.challenges.map((challenge, index) => (
@@ -101,8 +102,8 @@ export default async function IndustryPage({
       <Section tone="muted" ariaLabelledBy="approach-heading">
         <SectionHeading
           id="approach-heading"
-          eyebrow="How we help"
-          title="What we do differently for these businesses"
+          eyebrow={pages.industryDetail.approachEyebrow}
+          title={pages.industryDetail.approachTitle}
         />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {industry.approach.map((item, index) => (
@@ -126,8 +127,8 @@ export default async function IndustryPage({
         <Section ariaLabelledBy="industry-services-heading">
           <SectionHeading
             id="industry-services-heading"
-            eyebrow="Services"
-            title={`What ${industry.name.toLowerCase()} clients use most`}
+            eyebrow={pages.industryDetail.servicesEyebrow}
+            title={pages.industryDetail.servicesTitle(industry.name.toLowerCase())}
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {relevantServices.map((service, index) => (
@@ -147,8 +148,8 @@ export default async function IndustryPage({
             <div className="lg:col-span-4">
               <SectionHeading
                 id="industry-faq-heading"
-                eyebrow="Questions"
-                title={`${industry.name} FAQs`}
+                eyebrow={pages.industryDetail.faqEyebrow}
+                title={pages.industryDetail.faqTitle(industry.name)}
               />
             </div>
             <div className="lg:col-span-8">
@@ -159,8 +160,8 @@ export default async function IndustryPage({
       ) : null}
 
       <CtaBand
-        title={`Let's talk about your ${industry.name.toLowerCase()} business`}
-        body="Tell us how the business runs and where the numbers stop being useful. Thirty minutes, no charge."
+        title={pages.industryDetail.ctaTitle(industry.name.toLowerCase())}
+        body={pages.industryDetail.ctaBody}
       />
 
       {industry.faqs.length ? <JsonLd data={faqSchema(industry.faqs)} /> : null}
