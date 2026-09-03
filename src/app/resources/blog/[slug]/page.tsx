@@ -104,7 +104,7 @@ export default async function BlogPostPage({
               <p className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
                 <Link
                   href="/resources/blog"
-                  className="rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent transition-colors hover:bg-accent hover:text-accent-fg"
+                  className="rounded-full bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent ring-1 ring-accent/25 transition-colors hover:bg-accent hover:text-accent-fg hover:ring-accent"
                 >
                   {post.category}
                 </Link>

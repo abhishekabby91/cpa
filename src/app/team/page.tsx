@@ -35,7 +35,7 @@ export default function TeamPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {team.map((member, index) => (
             <Reveal key={member.slug} delay={index * 60}>
-              <TeamCard member={member} />
+              <TeamCard member={member} headingLevel={2} />
             </Reveal>
           ))}
         </div>

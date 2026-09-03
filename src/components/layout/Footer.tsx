@@ -163,7 +163,7 @@ export function Footer() {
                   <Icon name="check" className="h-3.5 w-3.5 text-white/50" />
                   <span className="text-white/85">{credential.label}</span>
                   {credential.detail ? (
-                    <span className="text-white/45">· {credential.detail}</span>
+                    <span className="text-white/60">· {credential.detail}</span>
                   ) : null}
                 </li>
               ))}

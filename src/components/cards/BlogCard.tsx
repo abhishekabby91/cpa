@@ -6,10 +6,15 @@ import { formatDate } from "@/lib/utils";
 export function BlogCard({
   post,
   featured = false,
+  /** Set to 2 when the grid sits directly under the page h1. */
+  headingLevel = 3,
 }: {
   post: Post;
   featured?: boolean;
+  headingLevel?: 2 | 3;
 }) {
+  const Heading = `h${headingLevel}` as "h2" | "h3";
+
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-brand-lg border border-line bg-surface shadow-card transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-raised">
       <div
@@ -62,14 +67,14 @@ export function BlogCard({
           <span className="text-ink-muted">{post.readingTime}</span>
         </div>
 
-        <h3 className={featured ? "text-xl leading-snug" : "text-lg leading-snug"}>
+        <Heading className={featured ? "text-xl leading-snug" : "text-lg leading-snug"}>
           <Link
             href={`/resources/blog/${post.slug}`}
             className="after:absolute after:inset-0"
           >
             {post.title}
           </Link>
-        </h3>
+        </Heading>
 
         <p className="mt-2.5 flex-1 text-[0.9375rem] leading-relaxed text-ink-muted">
           {post.excerpt}

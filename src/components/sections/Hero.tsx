@@ -87,10 +87,10 @@ export function Hero() {
           <div className="lg:col-span-5">
             <div className="relative mx-auto max-w-md rounded-brand-lg border border-white/12 bg-white/[0.06] p-6 backdrop-blur-sm sm:p-7">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/65">
                   Your position at a glance
                 </p>
-                <span className="rounded-full bg-[var(--color-highlight)]/15 px-2.5 py-1 text-[0.6875rem] font-semibold text-[var(--color-highlight)]">
+                <span className="rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-[0.6875rem] font-semibold text-white/80">
                   Illustrative
                 </span>
               </div>

@@ -35,7 +35,7 @@ export default function LocationsPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {locations.map((location, index) => (
             <Reveal key={location.slug} delay={index * 70}>
-              <LocationCard location={location} />
+              <LocationCard location={location} headingLevel={2} />
             </Reveal>
           ))}
         </div>
