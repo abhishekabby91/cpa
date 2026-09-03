@@ -34,7 +34,10 @@ export function pageMetadata({
   const fullTitle = path === "/" ? title : `${title} | ${site.firmName}`;
 
   return {
-    title: fullTitle,
+    // `absolute` bypasses the root layout's title template. Without it the
+    // firm name is appended twice on every page below the root segment: once
+    // here, once by the template.
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical: url },
     robots: noIndex
