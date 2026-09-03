@@ -40,6 +40,7 @@ interface ButtonProps {
   disabled?: boolean;
   /** Set when the destination is off-site (e.g. an external scheduling tool). */
   external?: boolean;
+  onClick?: () => void;
   "aria-label"?: string;
 }
 
@@ -52,6 +53,7 @@ export function Button({
   type = "button",
   disabled,
   external,
+  onClick,
   ...rest
 }: ButtonProps) {
   const classes = cn(base, variants[variant], sizes[size], className);
@@ -66,6 +68,7 @@ export function Button({
           className={classes}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={onClick}
           {...rest}
         >
           {children}
@@ -73,14 +76,20 @@ export function Button({
       );
     }
     return (
-      <Link href={href} className={classes} {...rest}>
+      <Link href={href} className={classes} onClick={onClick} {...rest}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} className={classes} disabled={disabled} {...rest}>
+    <button
+      type={type}
+      className={classes}
+      disabled={disabled}
+      onClick={onClick}
+      {...rest}
+    >
       {children}
     </button>
   );

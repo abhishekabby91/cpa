@@ -13,7 +13,7 @@ export const stats: Stat[] = [
   { value: "20+", label: "Years in practice", detail: "Serving Central Texas since 2004" },
   { value: "600+", label: "Clients served", detail: "Individuals and businesses" },
   { value: "18", label: "States we file in", detail: "Multi-state compliance" },
-  { value: "Licensed CPAs", label: "On every engagement", detail: "Texas State Board of Public Accountancy" },
+  { value: "AICPA", label: "Member firm", detail: "American Institute of CPAs" },
 ];
 
 /** Short proof points rendered directly beneath the homepage hero. */
@@ -21,7 +21,6 @@ export const heroTrustPoints: string[] = [
   "Licensed CPAs",
   "AICPA member firm",
   "Fixed-fee engagements",
-  "Secure client portal",
 ];
 
 export const differentiators: Differentiator[] = [

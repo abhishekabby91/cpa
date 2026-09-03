@@ -38,7 +38,7 @@ export function Footer() {
       <Container>
         <div className="grid gap-12 py-14 lg:grid-cols-12 lg:gap-8 lg:py-16">
           {/* Firm block */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-3">
             <Logo tone="dark" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/70">
               {site.description}
@@ -66,7 +66,7 @@ export function Footer() {
           </div>
 
           {/* Link columns */}
-          <div className="grid gap-10 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-2 lg:gap-8">
+          <div className="grid content-start gap-10 sm:grid-cols-2 lg:col-span-6 lg:grid-cols-4 lg:gap-6">
             {site.footerNav.map((column) => (
               <div key={column.title}>
                 <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">

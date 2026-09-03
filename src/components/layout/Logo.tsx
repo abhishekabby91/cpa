@@ -47,7 +47,7 @@ export function Logo({
           <span className="flex flex-col leading-none">
             <span
               className={cn(
-                "font-serif text-[1.0625rem] font-semibold tracking-tight",
+                "font-serif text-[0.9375rem] font-semibold leading-tight tracking-tight sm:text-[1.0625rem]",
                 onDark ? "text-primary-fg" : "text-primary",
               )}
             >
@@ -55,7 +55,7 @@ export function Logo({
             </span>
             <span
               className={cn(
-                "mt-1 text-[0.625rem] font-medium uppercase tracking-[0.16em]",
+                "mt-1 hidden text-[0.625rem] font-medium uppercase tracking-[0.16em] sm:block",
                 onDark ? "text-white/60" : "text-ink-muted",
               )}
             >
