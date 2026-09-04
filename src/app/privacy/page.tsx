@@ -22,7 +22,11 @@ export default function PrivacyPage() {
         <strong>Template notice —</strong> this policy is a starting point drafted
         for a US CPA firm. Have counsel review and adapt it to your actual data
         practices, the states you operate in, and your obligations under the
-        Gramm-Leach-Bliley Act and IRS Publication 4557 before publishing.
+        Gramm-Leach-Bliley Act and IRS Publication 4557 before publishing. Counsel
+        should also confirm which privacy regimes apply to this firm&rsquo;s
+        visitors and whether the consent mode configured in{" "}
+        <code>content/privacy.ts</code> matches them &mdash; the site ships with
+        opt-in, which is the stricter posture.
       </p>
 
       <h2>Information we collect</h2>
@@ -73,9 +77,19 @@ export default function PrivacyPage() {
 
       <h2>Cookies and analytics</h2>
       <p>
-        This website may use cookies and analytics tools to understand how the
-        site is used. You can control cookies through your browser settings.
-        Disabling them may affect some functionality.
+        This website sets strictly necessary cookies to function, including one
+        that records your cookie preferences. Nothing optional &mdash; analytics,
+        functional or advertising &mdash; is set until you agree to it.
+      </p>
+      <p>
+        You can review the categories, see exactly which cookies each one sets,
+        and change your choice at any time from the{" "}
+        <strong>Cookie preferences</strong> link in the footer. Withdrawing
+        consent is as straightforward as giving it.
+      </p>
+      <p>
+        We honour the Global Privacy Control (GPC) browser signal. If your
+        browser sends it, optional cookies stay off and you will not be asked.
       </p>
 
       <h2>Data security</h2>

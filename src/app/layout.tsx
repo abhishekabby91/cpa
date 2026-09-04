@@ -9,6 +9,8 @@ import { Footer } from "@/components/layout/Footer";
 import { MobileCtaBar } from "@/components/layout/MobileCtaBar";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { Analytics } from "@/components/analytics/Analytics";
+import { ConsentManager } from "@/components/consent/ConsentManager";
+import { consentModeBootstrap } from "@/lib/consent";
 import "./globals.css";
 
 /* Self-hosted at build time by next/font — no render-blocking request to a
@@ -81,6 +83,13 @@ export default function RootLayout({
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: themeCss() }}
         />
+        {/* Google Consent Mode v2 defaults. This MUST run before gtag.js so no
+            tag ever fires with storage granted by accident — everything starts
+            denied and is only raised after the visitor agrees. */}
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: consentModeBootstrap() }}
+        />
         {/* Marks that JavaScript is available, so scroll-reveal only hides
             content it can actually reveal. */}
         <script
@@ -100,6 +109,7 @@ export default function RootLayout({
         <MobileCtaBar />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <Analytics />
+        <ConsentManager />
       </body>
     </html>
   );

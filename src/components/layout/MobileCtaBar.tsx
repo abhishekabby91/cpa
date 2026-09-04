@@ -28,6 +28,9 @@ export function MobileCtaBar() {
       className={cn(
         "no-print fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur transition-transform duration-300 lg:hidden",
         visible ? "translate-y-0" : "translate-y-full",
+        // The consent banner occupies the same corner and sits above this one.
+        // Stand down while it is showing rather than hiding behind it.
+        "[html[data-consent-open]_&]:translate-y-full",
       )}
       // Hidden from assistive tech while off-screen; the same actions exist in
       // the header and in-page CTAs.

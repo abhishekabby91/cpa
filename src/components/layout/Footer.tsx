@@ -4,6 +4,7 @@ import { locations } from "@/content/locations";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
 import { Logo } from "./Logo";
+import { CookiePreferencesLink } from "@/components/consent/ConsentManager";
 import { directionsUrl } from "@/lib/utils";
 
 const socialLabels: Record<string, string> = {
@@ -191,6 +192,10 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              {/* Withdrawing consent must be as easy as giving it. */}
+              <li>
+                <CookiePreferencesLink className="text-xs text-white/60 underline-offset-2 transition-colors hover:text-white hover:underline" />
+              </li>
             </ul>
           </div>
         </div>

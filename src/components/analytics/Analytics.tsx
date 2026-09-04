@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { useEffect } from "react";
 import { GA_MEASUREMENT_ID, analyticsEnabled, trackEvent } from "@/lib/analytics";
+import { defaultState, readConsent } from "@/lib/consent";
 import { site } from "@/content/site";
 
 /**
@@ -22,6 +23,11 @@ export function Analytics() {
     if (!analyticsEnabled) return;
 
     const onClick = (event: MouseEvent) => {
+      // Consent Mode already suppresses storage, but there is no reason to
+      // send an event the visitor declined to be measured by.
+      const consent = readConsent() ?? defaultState();
+      if (!consent.analytics) return;
+
       const link = (event.target as HTMLElement | null)?.closest?.("a");
       if (!link) return;
       const href = link.getAttribute("href") ?? "";
@@ -56,8 +62,9 @@ export function Analytics() {
       />
       <Script id="ga4-init" strategy="afterInteractive">
         {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
+          // dataLayer and gtag() are already defined by the Consent Mode
+          // bootstrap in <head>, which ran before gtag.js loaded. Redefining
+          // them here would discard the queued consent defaults.
           gtag('js', new Date());
           gtag('config', '${GA_MEASUREMENT_ID}', { anonymize_ip: true });
         `}

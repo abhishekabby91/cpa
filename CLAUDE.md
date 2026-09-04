@@ -81,6 +81,10 @@ The specifics:
 - **Services.** Two shipped FAQ answers deliberately flag work the template does
   not assume the firm does — audit and review engagements, brokerage. Edit them
   to match reality or remove the service.
+- **Cookie disclosures.** `content/privacy.ts` lists which cookies each category
+  sets. That is a disclosure, not decoration — run a cookie scan against the
+  finished site and reconcile before launch. Never add a category the site does
+  not actually use, and never remove the consent gate to "make analytics work."
 - **Tax figures in articles.** Written around principles rather than specific
   thresholds or rates, because those change annually and stale numbers on a CPA
   firm's site are a liability. If a figure is genuinely needed, cite the year.
@@ -102,6 +106,11 @@ client's counsel, and the notices come out only after review.
   correct — pass `2` when a grid sits directly under the page `h1`.
 - Icons are an inline set in `src/components/ui/Icon.tsx`. Add a key there and
   to `IconName` in `content/types.ts` rather than pulling in an icon package.
+- **Never load a third-party script outside the consent gate.** Analytics, ads,
+  pixels, chat widgets and embeds all wait for the visitor's choice. Google
+  Consent Mode v2 boots denied in `<head>` before gtag.js; adding a `<Script>`
+  that bypasses it silently makes the site non-compliant. `npm run qa` asserts
+  that no measurement request leaves the browser before consent.
 
 ## Before handing a site to a client
 

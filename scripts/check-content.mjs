@@ -219,7 +219,8 @@ if (!existsSync(baselinePath)) {
 
     for (const [, key, body] of attestations) {
       if (!(key in { statistics: 1, credentials: 1, testimonials: 1, locations: 1,
-                     services: 1, teamBios: 1, legalPages: 1, articles: 1 })) continue;
+                     services: 1, teamBios: 1, legalPages: 1, articles: 1,
+                     cookieDisclosure: 1 })) continue;
       if (key === "testimonials" && noTestimonials) continue;
 
       const verified = /verified:\s*true/.test(body) || body.includes("...unverified") === false && /verified:\s*true/.test(body);
@@ -239,6 +240,13 @@ if (!existsSync(baselinePath)) {
       }
     }
   }
+}
+
+/* ── 5. Agency documents must not ship to a client ───────────────────────── */
+
+if (existsSync(join(root, "docs", "agency"))) {
+  warn("docs/agency", "agency-internal documents are still present",
+    "delete docs/agency/ before handing this repository to a client — it holds your pricing");
 }
 
 /* ── Report ──────────────────────────────────────────────────────────────── */

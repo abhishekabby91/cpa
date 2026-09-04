@@ -139,7 +139,17 @@ const skip = (name, why) => skipped.push(`${name} — ${why}`);
   check('body scroll restored',
     await p.evaluate(() => getComputedStyle(document.body).overflow !== 'hidden'));
 
+  // Dismiss the consent banner first: it anchors to the same corner as the
+  // sticky CTA and deliberately suppresses it until the visitor has chosen.
+  const rejectBtn = p.getByRole('button', { name: /reject/i });
+  if (await rejectBtn.count()) {
+    await rejectBtn.first().click();
+    await p.waitForTimeout(400);
+  }
+
   // Sticky CTA bar appears after scroll
+  await p.evaluate(() => window.scrollTo(0, 0));
+  await p.waitForTimeout(400);
   const hiddenAtTop = await p.evaluate(() => {
     const bar = document.querySelector('[aria-hidden="true"].fixed');
     return bar ? bar.getBoundingClientRect().top >= window.innerHeight - 2 : null;

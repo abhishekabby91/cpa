@@ -131,6 +131,24 @@ Configure, don't fork. If a client needs something the config can't express,
 build it in the template behind a flag and merge down — never edit `src/` in a
 client fork. See [CLAUDE.md](../../../CLAUDE.md).
 
+## Stage 12b — Privacy and consent
+
+Any script that measures or targets the visitor waits for their choice. The
+template ships Google Consent Mode v2 booting denied, a banner where refusal is
+as easy as acceptance, a granular preference centre reachable from the footer,
+and Global Privacy Control honoured without prompting.
+
+Per client:
+
+- Reconcile `content/privacy.ts` with a real cookie scan of the finished site. A
+  cookie table that doesn't match what is actually set is worse than none.
+- Confirm the mode. `opt-in` ships by default and is required under GDPR/UK
+  GDPR; `opt-out` is common under US state laws. **Counsel decides**, not you.
+- Add any embed the client wants — chat, maps, scheduling, pixels — behind the
+  matching category, never outside the gate.
+- `npm run qa` asserts no analytics cookie is set and no measurement request is
+  sent before consent. Do not "temporarily" bypass it to debug analytics.
+
 ## Stage 13 — Optimize
 
 Static generation is the default; keep it. Before adding any dependency, ask

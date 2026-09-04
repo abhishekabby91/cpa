@@ -56,6 +56,13 @@ export const verification: Record<string, Attestation> = {
 
   /** Articles reviewed by a licensed CPA at the firm before publication. */
   articles: { ...unverified },
+
+  /**
+   * The cookie table in content/privacy.ts matches what the site actually sets,
+   * and counsel has confirmed the consent mode suits this firm's visitors.
+   * Run a cookie scan against the finished site and reconcile before signing.
+   */
+  cookieDisclosure: { ...unverified },
 };
 
 /** Human-readable descriptions, used by the content check's failure output. */
@@ -68,4 +75,5 @@ export const claimDescriptions: Record<string, string> = {
   teamBios: "Team names, titles, credentials and bios are accurate and current",
   legalPages: "Privacy, terms and accessibility pages reviewed by the firm's counsel",
   articles: "Articles reviewed by a licensed CPA at the firm before publication",
+  cookieDisclosure: "Cookie categories match what the site sets; consent mode confirmed by counsel",
 };
