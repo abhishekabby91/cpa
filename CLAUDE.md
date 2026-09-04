@@ -32,7 +32,8 @@ Run `npm run check:upstream` in a fork to see whether this has been violated.
 npm run dev            # local development
 npm run build          # production build — must pass before any handover
 npm run typecheck      # tsc --noEmit
-npm run check:content  # leftovers, placeholders, duplicate copy (gates deploy)
+npm run check:content  # leftovers, placeholders, duplicate copy, sign-off (gates deploy)
+npm run qa             # accessibility, mobile, forms, SEO — against a running site
 npm run check:upstream # how far this fork has drifted from the template
 npm run baseline       # TEMPLATE REPO ONLY — see below
 ```
@@ -48,7 +49,25 @@ duplicate check pass vacuously.
 ## Content rules
 
 This site makes public claims on behalf of a licensed CPA firm. Some things must
-never be invented, no matter how convenient:
+never be invented, no matter how convenient.
+
+**If you are here to "update the content" and you do not have the firm's real
+information, stop and ask for it.** Writing plausible statistics, testimonials
+or credentials is the single most damaging thing that can be done to this
+repository. `npm run check:content` cannot catch it — a fabricated figure and a
+true one are identical in source — which is why `content/verification.ts`
+requires a named human to sign off on each class of claim before the site can
+ship. Do not fill that file in yourself.
+
+What to do instead when the real information is missing:
+
+- Leave the placeholder in place. It is marked, and the check will keep failing,
+  which is the correct state for an unfinished site.
+- List exactly what you need. `docs/CLIENT-INTAKE.md` is the worksheet.
+- Write the parts that are not factual claims — service descriptions, process
+  copy, FAQ phrasing — and flag the parts that are.
+
+The specifics:
 
 - **Testimonials.** Only real client quotes with written permission to publish.
   The bundled ones are marked `PLACEHOLDER` and must be replaced or deleted. All
@@ -87,8 +106,13 @@ client's counsel, and the notices come out only after review.
 ## Before handing a site to a client
 
 ```bash
-npm run check:content && npm run typecheck && npm run build
+npm run check:content && npm run typecheck && npm run build && npm run qa
 ```
 
+`check:content` will keep failing until `content/verification.ts` is signed off.
+That is deliberate: it forces a conversation with someone at the firm who can
+substantiate each claim, and it is the last thing standing between a plausible
+AI rewrite and a published statement the firm's board can act on.
+
 Then walk the pre-launch checklist in the [README](README.md#before-you-go-live)
-with someone at the firm who can verify each claim on the site.
+with that person.

@@ -168,4 +168,10 @@ phone number dial? Does the scheduling link book a real slot?
 
 This site makes public claims for a licensed firm. Never invent a testimonial, a
 statistic, a credential, or an office location. If it cannot be substantiated on
-request, it does not ship. See [CLAUDE.md](../../../CLAUDE.md) for the full list.
+request, it does not ship.
+
+`content/verification.ts` requires a named person at the firm to sign off on each
+class of claim, and `npm run check:content` fails until they have. Do not fill
+that file in on their behalf — the whole point is that no script, and no model,
+can tell an invented figure from a true one. See
+[CLAUDE.md](../../../CLAUDE.md).

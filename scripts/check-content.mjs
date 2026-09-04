@@ -13,6 +13,10 @@
  *      example domains and 555 phone numbers, reaching production.
  *   3. DUPLICATE COPY — default prose still byte-identical to the template,
  *      which makes every site you sell a near-duplicate of every other one.
+ *   4. UNVERIFIED CLAIMS — statistics, credentials and testimonials that no
+ *      named person has signed off. A fabricated figure and a real one look
+ *      identical in source, so this is the one thing a script cannot judge;
+ *      content/verification.ts records the human attestation instead.
  *
  * Exit code 1 on any error, so it can gate a deploy. Warnings do not fail.
  */
@@ -183,6 +187,56 @@ if (!existsSync(baselinePath)) {
       report(file,
         `${pct}% of prose is still the template default (limit ${Math.round(limit * 100)}%)`,
         `${unchanged.length} of ${current.length} strings unchanged — every site you ship with these is a near-duplicate`);
+    }
+  }
+}
+
+/* ── 4. Sign-off on public claims ────────────────────────────────────────── */
+
+/**
+ * The checks above compare text. They cannot tell an invented statistic from a
+ * true one, which is exactly what a rewrite produces when nobody asked the firm.
+ * So require a named human attestation per claim before the site can ship.
+ */
+{
+  const src = sources["verification.ts"];
+  if (!src) {
+    warn("verification.ts", "missing — public claims are unverified",
+      "restore it from the template; the site should not ship without sign-off");
+  } else {
+    const attestations = [
+      ...src.matchAll(/(\w+):\s*\{([^}]*)\}/g),
+    ].filter(([, key]) => key !== "unverified");
+
+    const descriptions = Object.fromEntries(
+      [...src.matchAll(/^\s{2}(\w+):\s*"([^"]*)"/gm)].map((m) => [m[1], m[2]]),
+    );
+
+    // Testimonials need no sign-off when there are none to publish.
+    const noTestimonials = /export const testimonials[^=]*=\s*\[\s*\]/.test(
+      sources["testimonials.ts"] ?? "",
+    );
+
+    for (const [, key, body] of attestations) {
+      if (!(key in { statistics: 1, credentials: 1, testimonials: 1, locations: 1,
+                     services: 1, teamBios: 1, legalPages: 1, articles: 1 })) continue;
+      if (key === "testimonials" && noTestimonials) continue;
+
+      const verified = /verified:\s*true/.test(body) || body.includes("...unverified") === false && /verified:\s*true/.test(body);
+      const by = body.match(/by:\s*"([^"]*)"/)?.[1]?.trim() ?? "";
+      const date = body.match(/date:\s*"([^"]*)"/)?.[1]?.trim() ?? "";
+      const label = descriptions[key] ?? key;
+
+      if (!verified) {
+        err("verification.ts", `"${key}" is not signed off`, label);
+      } else if (!by || !date) {
+        err("verification.ts", `"${key}" is marked verified but has no name or date`,
+          "record who confirmed it and when — an unattributed sign-off is not one");
+      } else if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        err("verification.ts", `"${key}" has an unparseable date "${date}"`, "use YYYY-MM-DD");
+      } else if (new Date(date) > new Date()) {
+        err("verification.ts", `"${key}" is signed off with a future date "${date}"`, label);
+      }
     }
   }
 }
