@@ -10,7 +10,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "check:content": "node scripts/check-content.mjs",
-    "baseline": "node scripts/build-baseline.mjs"
+    "baseline": "node scripts/build-baseline.mjs",
+    "check:upstream": "node scripts/check-upstream.mjs"
   },
   "dependencies": {
     "next": "15.5.25",
