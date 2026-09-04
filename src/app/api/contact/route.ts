@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getService } from "@/content/services";
 
 /**
  * Contact form endpoint.
@@ -100,11 +101,54 @@ export async function POST(request: Request) {
   if (webhook) {
     try {
       const { companyWebsite: _honeypot, ...forwarded } = submission;
+      const fullName = `${submission.firstName} ${submission.lastName}`.trim();
+      const serviceName = submission.service
+        ? (getService(submission.service)?.name ?? submission.service)
+        : "Not specified";
+
+      /**
+       * Form services (Web3Forms, FormSubmit, Formspree and similar) authenticate
+       * with an access key in the payload and render `name`/`email`/`subject`/
+       * `message` as the body of the notification email. Sending those alongside
+       * the raw fields means the firm gets a readable message whichever service
+       * is wired up, and a plain webhook still receives everything.
+       *
+       * The key stays server-side because the browser posts to this route, not
+       * to the form service — which also keeps the honeypot and the validation
+       * above in front of it.
+       */
+      const accessKey = process.env.CONTACT_FORM_ACCESS_KEY;
+      const payload = {
+        // Raw fields first: the composed values below must win, or the
+        // notification email loses the phone, company and service details.
+        ...forwarded,
+        ...(accessKey ? { access_key: accessKey } : {}),
+        name: fullName,
+        email: submission.email,
+        subject: `Website inquiry from ${fullName}`,
+        message: [
+          submission.message,
+          "",
+          `Service needed: ${serviceName}`,
+          `Phone: ${submission.phone || "Not provided"}`,
+          `Company: ${submission.company || "Not provided"}`,
+          `Preferred contact: ${submission.preferredContact || "Not specified"}`,
+        ].join("\n"),
+        submittedAt: new Date().toISOString(),
+      };
+
       const response = await fetch(webhook, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...forwarded, submittedAt: new Date().toISOString() }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
       });
+      // Web3Forms answers 200 with {success:false} on a bad key, so check the body.
+      if (response.ok) {
+        const result = await response.json().catch(() => null);
+        if (result && result.success === false) {
+          throw new Error(`Form service rejected the submission: ${result.message ?? "unknown reason"}`);
+        }
+      }
       if (!response.ok) throw new Error(`Webhook responded ${response.status}`);
     } catch (error) {
       // Logged without the submission body, so contact details never reach

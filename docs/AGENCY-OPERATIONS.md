@@ -75,10 +75,17 @@ canonicals, `sitemap.xml`, and Open Graph tags are all correct with no hosting
 dashboard step. Use the env var when you want a preview deployment to advertise
 its own URL rather than production's.
 
-`CONTACT_FORM_WEBHOOK_URL` is different — it is a real secret, belongs in the
-hosting project's environment, and must never be committed. Without it the form
-validates and discards submissions, which is fine for a staging review and not
-fine at launch.
+`CONTACT_FORM_WEBHOOK_URL` and `CONTACT_FORM_ACCESS_KEY` are different — they
+belong in the hosting project's environment and must never be committed. Without
+them the form validates and discards submissions, which is fine for a staging
+review and not fine at launch.
+
+The browser posts to `/api/contact`, which validates and applies the honeypot
+before forwarding to the form service. That keeps the access key server-side and
+filters spam before it eats the service's quota. A rejected key produces a 502
+and an honest "call the office" message rather than a silent success, so a
+misconfiguration surfaces immediately instead of quietly losing inquiries —
+always send one real test submission after wiring it up.
 
 Then work [CLIENT-INTAKE.md](CLIENT-INTAKE.md) and the content order in the
 [README](../README.md#per-client-checklist).
