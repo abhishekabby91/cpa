@@ -65,9 +65,20 @@ npm install
 git remote add template https://github.com/YOUR-ORG/YOUR-TEMPLATE.git
 
 # 3. Configure
-cp .env.example .env.local     # NEXT_PUBLIC_SITE_URL = the client's domain
+cp .env.example .env.local     # optional locally — see note below
 npm run dev
 ```
+
+**On environment variables.** `NEXT_PUBLIC_SITE_URL` only *overrides* `url` in
+`content/site.ts`; it is not required. Set the client's domain in the config and
+canonicals, `sitemap.xml`, and Open Graph tags are all correct with no hosting
+dashboard step. Use the env var when you want a preview deployment to advertise
+its own URL rather than production's.
+
+`CONTACT_FORM_WEBHOOK_URL` is different — it is a real secret, belongs in the
+hosting project's environment, and must never be committed. Without it the form
+validates and discards submissions, which is fine for a staging review and not
+fine at launch.
 
 Then work [CLIENT-INTAKE.md](CLIENT-INTAKE.md) and the content order in the
 [README](../README.md#per-client-checklist).
