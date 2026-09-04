@@ -152,10 +152,27 @@ list with someone at the firm who can verify each item.
 ## Selling this to multiple firms
 
 This repo is set up to be **forked per client**: mark it as a GitHub template,
-and each new engagement starts as an independent copy. That gives you unlimited
-per-client customization, at the cost of fixes not propagating — a bug you fix
-in one fork stays fixed only there. Keep a note of which forks are live so you
-can decide what's worth back-porting.
+and each new engagement starts as an independent copy with its own repo, its own
+hosting project, its own domain and its own analytics. Nothing is shared at
+runtime, so one client's bad deploy or outage never touches another's.
+
+[docs/AGENCY-OPERATIONS.md](docs/AGENCY-OPERATIONS.md) covers running this as a
+web development company: ownership boundaries (domain, hosting account, code,
+content), new client setup, maintenance across many forks, handover, and
+offboarding.
+
+The cost of forking is that fixes don't propagate — a Next.js security patch
+lands in the template and reaches nobody. Two things keep that manageable:
+
+```bash
+git remote add template https://github.com/YOUR-ORG/YOUR-TEMPLATE.git  # day one
+npm run check:upstream    # what is this fork missing, and what will conflict?
+```
+
+and one discipline: **never edit `src/` in a client fork**. A fork with an
+untouched `src/` merges upstream cleanly every time. Per-client differences
+belong in `content/` — which, after the copy extraction, is where every word on
+the site already lives.
 
 Collect the firm's information first — [docs/CLIENT-INTAKE.md](docs/CLIENT-INTAKE.md)
 is a worksheet you can send as-is. The build is under an hour; getting verified
