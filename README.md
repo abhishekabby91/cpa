@@ -157,6 +157,11 @@ per-client customization, at the cost of fixes not propagating — a bug you fix
 in one fork stays fixed only there. Keep a note of which forks are live so you
 can decide what's worth back-porting.
 
+Collect the firm's information first — [docs/CLIENT-INTAKE.md](docs/CLIENT-INTAKE.md)
+is a worksheet you can send as-is. The build is under an hour; getting verified
+answers about credentials, statistics and testimonials is what sets the
+timeline.
+
 ### Per-client checklist
 
 ```bash
@@ -191,8 +196,30 @@ change April"* page word for word, search engines see twenty near-duplicates.
 They pick one and suppress the rest. The client who bought the site expecting
 organic traffic doesn't get it, and neither do the other nineteen.
 
-Nothing in the architecture stops you from shipping the defaults — that's a
-process problem, not a code problem, and it's why step 4 above says *rewrite*.
+Nothing in the architecture stops you from shipping the defaults, so there's a
+check that does:
+
+```bash
+npm run check:content
+```
+
+It exits non-zero — so it can gate a deploy — on three things:
+
+- **Leftovers.** Regions, offices and dates from another firm still present
+  because a file was never opened. This is how a Sacramento firm ships a
+  "Serving Central Texas" statistic and an `/locations/austin-tx` page.
+- **Placeholders.** `PLACEHOLDER` markers, `example.com` addresses, reserved
+  555-01xx phone numbers, example LinkedIn URLs.
+- **Duplicate copy.** Prose still byte-identical to the template, measured per
+  file against `scripts/template-baseline.json`. Articles must be 100% replaced;
+  services and industries allow 15%; shared labels are looser.
+
+Running it in *this* repo fails by design — the template is the placeholder.
+It should pass in a finished client fork.
+
+If you change the template's own content, regenerate the fingerprint with
+`npm run baseline` and commit it. Never run that in a client fork: it would
+fingerprint their copy and make the duplicate check pass vacuously.
 
 A workable minimum per client:
 
