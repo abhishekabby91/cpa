@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { redirects as clientRedirects } from "./content/redirects";
 
 /**
  * Security headers applied to every response.
@@ -30,6 +31,17 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+  /**
+   * Redirects from the client's previous site, so a redesign keeps the rankings
+   * and inbound links the firm already earned. See content/redirects.ts.
+   */
+  async redirects() {
+    return clientRedirects.map((r) => ({
+      source: r.source,
+      destination: r.destination,
+      permanent: r.permanent ?? true,
+    }));
   },
 };
 

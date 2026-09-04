@@ -23,11 +23,19 @@ npm run dev                    # http://localhost:3000
 ```
 
 ```bash
-npm run build     # production build (every page prerenders to static HTML)
-npm start         # serve the production build
-npm run typecheck # tsc --noEmit
+npm run build          # production build (every page prerenders to static HTML)
+npm start              # serve the production build
+npm run typecheck      # tsc --noEmit
 npm run lint
+
+npm run check:content  # leftovers, placeholders, duplicate copy — gates a client launch
+npm run check:upstream # how far a client fork has drifted from the template
+npm run qa             # accessibility, mobile, forms and SEO, against a running site
 ```
+
+`npm run qa` needs Playwright (`npm install playwright && npx playwright install
+chromium`) and runs against a deployment too:
+`QA_BASE_URL=https://client.vercel.app npm run qa`.
 
 Requires Node 20.9+.
 

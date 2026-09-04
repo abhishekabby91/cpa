@@ -8,6 +8,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileCtaBar } from "@/components/layout/MobileCtaBar";
 import { SkipLink } from "@/components/layout/SkipLink";
+import { Analytics } from "@/components/analytics/Analytics";
 import "./globals.css";
 
 /* Self-hosted at build time by next/font — no render-blocking request to a
@@ -98,6 +99,7 @@ export default function RootLayout({
         <Footer />
         <MobileCtaBar />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
+        <Analytics />
       </body>
     </html>
   );
