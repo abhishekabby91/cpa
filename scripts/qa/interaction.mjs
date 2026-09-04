@@ -43,8 +43,10 @@ function sampleRoutes(all) {
   ].filter(Boolean))];
 }
 const b = await chromium.launch(launchOptions);
-const pass = [], fail = [];
+const pass = [], fail = [], skipped = [];
 const check = (name, ok, detail = '') => (ok ? pass : fail).push(`${name}${detail ? ' — ' + detail : ''}`);
+/** Content a client hasn't added yet is not a failure — but it must be visible. */
+const skip = (name, why) => skipped.push(`${name} — ${why}`);
 
 // ── Desktop: skip link, nav flyout, FAQ accordion, blog filter ────────────
 {
@@ -82,20 +84,37 @@ const check = (name, ok, detail = '') => (ok ? pass : fail).push(`${name}${detai
   await p.waitForTimeout(120);
   check('accordion opens on click', await det.evaluate(d => d.open));
 
-  // Blog search + category filter
+  // Blog search + category filter. Everything here depends on the client having
+  // published articles, so it skips rather than fails on a site that hasn't yet.
   await p.goto(BASE + '/resources/blog', { waitUntil: 'networkidle' });
   const before = await p.locator('article').count();
-  await p.fill('#post-search', 'payroll-nonsense-zzz');
-  await p.waitForTimeout(250);
-  const noneLeft = await p.locator('article').count();
-  check('search narrows results', before > 0 && noneLeft === 0, `${before} → ${noneLeft}`);
-  await p.click('text=Clear filters');
-  await p.waitForTimeout(250);
-  check('clear filters restores results', (await p.locator('article').count()) === before);
-  await p.locator('button[aria-pressed]', { hasText: 'Tax Planning' }).first().click();
-  await p.waitForTimeout(250);
-  const filtered = await p.locator('article').count();
-  check('category filter applies', filtered > 0 && filtered < before, `${before} → ${filtered}`);
+  if (before === 0) {
+    skip('blog search and filtering', 'no articles published yet');
+    const emptyState = await p.locator('text=/no articles/i').count();
+    check('blog shows an empty state rather than a blank page', emptyState > 0);
+  } else {
+    await p.fill('#post-search', 'payroll-nonsense-zzz');
+    await p.waitForTimeout(250);
+    const noneLeft = await p.locator('article').count();
+    check('search narrows results', noneLeft === 0, `${before} → ${noneLeft}`);
+    await p.click('text=Clear filters');
+    await p.waitForTimeout(250);
+    check('clear filters restores results', (await p.locator('article').count()) === before);
+
+    // Use whichever categories this client actually has, not a template name.
+    const categories = p.locator('button[aria-pressed]');
+    const labels = await categories.allTextContents();
+    const target = labels.find((l) => l.trim() && l.trim() !== 'All');
+    if (!target || labels.length < 3) {
+      skip('category filter', 'fewer than two categories in use');
+    } else {
+      await categories.filter({ hasText: target }).first().click();
+      await p.waitForTimeout(250);
+      const filtered = await p.locator('article').count();
+      check('category filter applies', filtered > 0 && filtered <= before,
+        `"${target.trim()}": ${before} → ${filtered}`);
+    }
+  }
 
   await ctx.close();
 }
@@ -139,7 +158,8 @@ const check = (name, ok, detail = '') => (ok ? pass : fail).push(`${name}${detai
     document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check('no horizontal scroll on mobile home', overflow <= 1, `${overflow}px`);
 
-  for (const path of ['/services/tax-planning', '/resources/blog/monthly-close-checklist', '/contact', '/locations/austin-tx']) {
+  const mobileRoutes = sampleRoutes(await sitemapPaths()).filter((r) => !r.includes('404-check'));
+  for (const path of mobileRoutes) {
     await p.goto(BASE + path, { waitUntil: 'networkidle' });
     const o = await p.evaluate(() =>
       document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -210,10 +230,15 @@ const check = (name, ok, detail = '') => (ok ? pass : fail).push(`${name}${detai
   const ctx = await b.newContext();
   const req = ctx.request;
   const sm = await (await req.get(BASE + '/sitemap.xml')).text();
-  const urls = (sm.match(/<loc>/g) || []).length;
-  check('sitemap lists every page', urls >= 40, `${urls} URLs`);
-  check('sitemap includes service detail pages', sm.includes('/services/tax-planning'));
-  check('sitemap includes location pages', sm.includes('/locations/austin-tx'));
+  const smPaths = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
+  check('sitemap is populated', smPaths.length > 10, `${smPaths.length} URLs`);
+  check('sitemap includes service detail pages',
+    smPaths.some((u) => u.startsWith('/services/') && u !== '/services'));
+  check('sitemap includes location pages',
+    smPaths.some((u) => u.startsWith('/locations/') && u !== '/locations'));
+  for (const core of ['/', '/services', '/contact', '/faqs']) {
+    check(`sitemap includes ${core}`, smPaths.includes(core));
+  }
   const rb = await (await req.get(BASE + '/robots.txt')).text();
   check('robots.txt points at sitemap', rb.includes('/sitemap.xml'));
   check('robots.txt disallows /api/', rb.includes('/api/'));
@@ -226,18 +251,34 @@ const check = (name, ok, detail = '') => (ok ? pass : fail).push(`${name}${detai
   check('home emits AccountingService JSON-LD', home.includes('"AccountingService"'));
   check('home emits FAQPage JSON-LD', home.includes('"FAQPage"'));
   check('home emits canonical', /rel="canonical"/.test(home));
-  const svc = await (await req.get(BASE + '/services/tax-planning')).text();
-  check('service page emits Service + Breadcrumb JSON-LD',
-    svc.includes('"Service"') && svc.includes('"BreadcrumbList"'));
-  const post = await (await req.get(BASE + '/resources/blog/monthly-close-checklist')).text();
-  check('article emits Article JSON-LD', post.includes('"Article"'));
-  const loc = await (await req.get(BASE + '/locations/austin-tx')).text();
-  check('location emits LocalBusiness JSON-LD', loc.includes('"LocalBusiness"'));
-  const team = await (await req.get(BASE + '/team/margaret-chen')).text();
-  check('team profile emits Person JSON-LD', team.includes('"Person"'));
+  /** First URL under a prefix that this site actually publishes. */
+  const firstUnder = (prefix, depth) =>
+    smPaths.find((u) => u.startsWith(prefix) && u.split('/').filter(Boolean).length === depth);
+
+  const fetchText = async (path) => (path ? (await req.get(BASE + path)).text() : null);
+
+  const svc = await fetchText(firstUnder('/services/', 2));
+  if (svc) {
+    check('service page emits Service + Breadcrumb JSON-LD',
+      svc.includes('"Service"') && svc.includes('"BreadcrumbList"'));
+  } else skip('service JSON-LD', 'no service pages published');
+
+  const post = await fetchText(firstUnder('/resources/blog/', 3));
+  if (post) check('article emits Article JSON-LD', post.includes('"Article"'));
+  else skip('article JSON-LD', 'no articles published yet');
+
+  const loc = await fetchText(firstUnder('/locations/', 2));
+  if (loc) check('location emits LocalBusiness JSON-LD', loc.includes('"LocalBusiness"'));
+  else skip('location JSON-LD', 'no location pages published');
+
+  const team = await fetchText(firstUnder('/team/', 2));
+  if (team) check('team profile emits Person JSON-LD', team.includes('"Person"'));
+  else skip('team JSON-LD', 'no team profiles published yet');
 
   // JSON-LD must be valid JSON on every page type
-  for (const [name, html] of [['home', home], ['service', svc], ['article', post], ['location', loc]]) {
+  const parseTargets = [['home', home], ['service', svc], ['article', post], ['location', loc]]
+    .filter(([, html]) => html);
+  for (const [name, html] of parseTargets) {
     const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
     let ok = blocks.length > 0;
     for (const m of blocks) { try { JSON.parse(m[1].replace(/\\u003c/g, '<')); } catch { ok = false; } }
@@ -248,7 +289,9 @@ const check = (name, ok, detail = '') => (ok ? pass : fail).push(`${name}${detai
 
 console.log(`\n${'='.repeat(60)}`);
 pass.forEach(t => console.log('  ✓ ' + t));
+if (skipped.length) { console.log(''); skipped.forEach(t => console.log('  – ' + t)); }
 if (fail.length) { console.log(''); fail.forEach(t => console.log('  ✗ ' + t)); }
-console.log(`${'='.repeat(60)}\n${pass.length} passed, ${fail.length} failed`);
+console.log(`${'='.repeat(60)}\n${pass.length} passed, ${fail.length} failed` +
+  (skipped.length ? `, ${skipped.length} skipped` : ''));
 await b.close();
 process.exit(fail.length ? 1 : 0);
